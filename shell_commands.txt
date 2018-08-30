@@ -1,0 +1,10 @@
+==> To install from requirements.txt
+	pip install -r requirements.txt
+==> To save installed modules into requirements.txt	
+	pip freeze > requirements.txt
+
+
+==> postgres commands
+CREATE USER autodidact_forum_user WITH PASSWORD 'autodidact_forum@1234';
+GRANT ALL PRIVILEGES ON DATABASE autodidact_forum TO autodidact_forum_user;
+
