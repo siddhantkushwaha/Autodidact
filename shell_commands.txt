@@ -8,3 +8,6 @@
 CREATE USER autodidact_forum_user WITH PASSWORD 'autodidact_forum@1234';
 GRANT ALL PRIVILEGES ON DATABASE autodidact_forum TO autodidact_forum_user;
 
+==> django commands
+	python manage.py collectstatic
+
