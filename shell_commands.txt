@@ -5,8 +5,9 @@
 
 
 ==> postgres commands
-CREATE USER autodidact_forum_user WITH PASSWORD 'autodidact_forum@1234';
-GRANT ALL PRIVILEGES ON DATABASE autodidact_forum TO autodidact_forum_user;
+CREATE USER autodidact_forum WITH PASSWORD 'autodidact_forum@1234';
+GRANT ALL PRIVILEGES ON DATABASE autodidact_forum TO autodidact_forum;
+
 
 ==> django commands
 	python manage.py collectstatic
@@ -17,10 +18,15 @@ GRANT ALL PRIVILEGES ON DATABASE autodidact_forum TO autodidact_forum_user;
 sudo apt-get update
 sudo apt-get install postgresql postgresql-contrib
 
+==> switching to postgres user
+	sudo -i -u postgres
+
 ==> Accessing postgresql command prompt
 
-sudo -u postgres psql
+	sudo -u postgres psql
+	sudo service postgresql restart
+	psql -h 139.59.59.67 -U autodidact_forum
 
 ==> Creating user within postgres account
 
-createuser --interactive
+	createuser --interactive

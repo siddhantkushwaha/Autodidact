@@ -77,9 +77,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'autodidact_forum',
-        'USER': 'autodidact_forum_user',
+        'USER': 'autodidact_forum',
         'PASSWORD': 'autodidact_forum@1234',
-        'HOST': 'localhost',
+        'HOST': '139.59.59.67',
         'PORT': '',
     }
 }
