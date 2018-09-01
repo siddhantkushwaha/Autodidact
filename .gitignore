@@ -1,4 +1,4 @@
 *.pyc
 *.DS_Store
-autodidact/venv
-autodidact/.idea
+/autodidact/venv
+/autodidact/.idea
