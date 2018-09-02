@@ -3,4 +3,7 @@ from django.shortcuts import render
 
 
 def main(request):
-    return HttpResponse("Hello")
+    context = {
+
+    }
+    return render(request, template_name='index.html', context=context)
