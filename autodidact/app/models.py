@@ -4,15 +4,17 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='UserProfile')
+    #TODO add uer image field
 
     def __str__(self):
         return self.user.username
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     use_count = models.IntegerField(default=0)
     creation_time = models.TimeField(auto_now_add=True)
+    created_by = models.IntegerField(default=1)
 
     def __str__(self):
         return str(self.name) + ' ;' + str(self.use_count) + ' ;' + str(self.creation_time)
