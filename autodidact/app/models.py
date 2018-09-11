@@ -20,7 +20,7 @@ class Tag(models.Model):
 
 class Thread(models.Model):
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=100000)
+    description = models.IntegerField()
     view_count = models.IntegerField(default=0)
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
@@ -31,7 +31,7 @@ class Thread(models.Model):
 
 
 class Answer(models.Model):
-    description = models.CharField(max_length=100000)
+    description = models.IntegerField()
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
     creation_time = models.TimeField(auto_now_add=True)
