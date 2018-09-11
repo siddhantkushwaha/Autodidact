@@ -12,6 +12,32 @@ GRANT ALL PRIVILEGES ON DATABASE autodidact_forum TO autodidact_forum;
 ==> django commands
 	python manage.py collectstatic
 
+
+=========================================================================
+
+MYSQL
+
+==> ssh -L 3306:127.0.0.1:3306 autodidact@139.59.68.57 -N
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=========================================================================
+
 ==> After creating server on digital ocean
 ==> Install postgresql
 

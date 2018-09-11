@@ -50,11 +50,11 @@ WSGI_APPLICATION = 'autodidact.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'autodidact_forum',
         'USER': 'autodidact_forum',
         'PASSWORD': 'autodidact_forum@1234',
-        'HOST': '139.59.59.67',
+        'HOST': '127.0.0.1',
         'PORT': '',
     }
 }
