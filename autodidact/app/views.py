@@ -17,7 +17,9 @@ def index(request):
 def signUpUser(request):
     logout(request)
     if request.POST:
+        print(request.POST)
         form = SignUpForm(request.POST)
+        print(form)
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             new_forum_user = ForumUser()
@@ -33,14 +35,17 @@ def signUpUser(request):
 
 def logInUser(request):
     logout(request)
+    print("doing login-1")
     if request.POST:
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username + " " + password)
+        user = authenticate(username=username, password=password)
+        if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('app:home'))
+        else:
+            return HttpResponse('error login')
     else:
         form = LoginForm()
 
@@ -49,4 +54,16 @@ def logInUser(request):
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    template = 'home.html'
+    context = {
+             'user':request.user,
+    }
+    return render(request, template, context)
+
+# macrosensors=MacroSensor.objects.all()
+#     template = 'sensors/macro.html'
+#     context={
+#         'macrosensors':macrosensors,
+#         'user':request.user,
+#     }
+#     return render(request,template,context)
