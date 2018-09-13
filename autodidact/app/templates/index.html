@@ -8,11 +8,8 @@
 </head>
 
 <body>
-    <form action="" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+<a href="{% url 'app:login' %}">Login</a>
+<a href="{% url 'app:signup' %}">Signup</a>
 </body>
 
 </html>

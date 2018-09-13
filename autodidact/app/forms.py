@@ -1,6 +1,14 @@
-from django import forms
+from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 
-class SignUpForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=20, widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-    email = forms.EmailField(label='Email', widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+class SignUpForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'username', 'email', 'password']
+
+
+class LoginForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
