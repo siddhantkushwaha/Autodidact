@@ -49,4 +49,4 @@ def logInUser(request):
 
 @login_required
 def home(request):
-    return HttpResponse('logged in')
+    return render(request, 'home.html')

@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth.views import logout
 
 from app import views
 
@@ -8,4 +9,5 @@ urlpatterns = [
     url(r'^signup$', views.signUpUser, name='signup'),
     url(r'^login$', views.logInUser, name='login'),
     url(r'^home$', views.home, name='home'),
+    url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]
