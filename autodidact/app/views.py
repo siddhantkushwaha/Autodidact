@@ -60,10 +60,34 @@ def home(request):
     }
     return render(request, template, context)
 
-# macrosensors=MacroSensor.objects.all()
-#     template = 'sensors/macro.html'
-#     context={
-#         'macrosensors':macrosensors,
-#         'user':request.user,
-#     }
-#     return render(request,template,context)
+@login_required
+def posts(request):
+    template = 'posts.html'
+    context = {
+             'user':request.user,
+    }
+    return render(request, template, context)
+
+@login_required
+def tags(request):
+    template = 'tags.html'
+    context = {
+             'user':request.user,
+    }
+    return render(request, template, context)
+
+@login_required
+def users(request):
+    template = 'users.html'
+    context = {
+             'user':request.user,
+    }
+    return render(request, template, context)
+
+@login_required
+def userDetails(request):
+    template = 'profile.html'
+    context = {
+             'user':request.user,
+    }
+    return render(request, template, context)
