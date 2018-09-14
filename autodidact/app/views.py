@@ -1,11 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import *
-from app.forms import *
 
 
 def index(request):
@@ -14,35 +13,38 @@ def index(request):
     return render(request, 'index.html')
 
 
-def signUpUser(request):
-    logout(request)
-    if request.POST:
-        print(request.POST)
-        form = SignUpForm(request.POST)
-        print(form)
-        if form.is_valid():
-            new_user = User.objects.create_user(**form.cleaned_data)
-            new_forum_user = ForumUser()
-            new_forum_user.user = new_user
-            new_forum_user.save()
-            login(request, new_user)
-            return HttpResponseRedirect(reverse('app:home'))
-    else:
-        form = SignUpForm()
-
-    return render(request, 'signup.html', {'form': form})
+# def signUpUser(request):
+#     logout(request)
+#     if request.POST:
+#         print(request.POST)
+#         form = SignUpForm(request.POST)
+#         print(form)
+#         if form.is_valid():
+#             new_user = User.objects.create_user(**form.cleaned_data)
+#             new_forum_user = ForumUser()
+#             new_forum_user.user = new_user
+#             new_forum_user.save()
+#             login(request, new_user)
+#             return HttpResponseRedirect(reverse('app:home'))
+#     else:
+#         form = SignUpForm()
+#
+#     return render(request, 'signup.html', {'form': form})
 
 
 def logInUser(request):
-    logout(request)
-    print("doing login-1")
+    # logout(request)
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print(username + " " + password)
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
+        # user = authenticate(username=username, password=password)
+        user = authenticate(request, username, password)
+        print(type)
+        user_id = 1234;
+        if user_id is not None:
+            # login(request, user)
+            user = User()
+
             return HttpResponseRedirect(reverse('app:home'))
         else:
             return HttpResponse('error login')
@@ -60,10 +62,4 @@ def home(request):
     }
     return render(request, template, context)
 
-# macrosensors=MacroSensor.objects.all()
-#     template = 'sensors/macro.html'
-#     context={
-#         'macrosensors':macrosensors,
-#         'user':request.user,
-#     }
-#     return render(request,template,context)
+
