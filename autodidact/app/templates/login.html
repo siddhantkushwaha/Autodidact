@@ -11,29 +11,29 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
     crossorigin="anonymous">
   <link rel="stylesheet" href="{%  static 'app/css/style_signup.css' %}">
-  <title>Bootstrap Theme</title>
+  <title>Login User</title>
 </head>
 
 <body data-spy="scroll" data-target="#main-nav" id="home">
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" id="main-nav">
     <div class="container">
-      <a href="index.html" class="navbar-brand">LoopLAB</a>
+      <a href="" class="navbar-brand">Autodidact</a>
       <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a href="#home" class="nav-link">Home</a>
+            <a href="{% url 'app:signup' %}" class="nav-link">SignUp</a>
           </li>
           <li class="nav-item">
-            <a href="#explore-head-section" class="nav-link">Explore</a>
+            <a href="#explore-head-section" class="nav-link">Learn</a>
           </li>
           <li class="nav-item">
-            <a href="#create-head-section" class="nav-link">Create</a>
+            <a href="#create-head-section" class="nav-link">Share</a>
           </li>
           <li class="nav-item">
-            <a href="#share-head-section" class="nav-link">Share</a>
+            <a href="#share-head-section" class="nav-link">Build</a>
           </li>
         </ul>
       </div>
@@ -46,16 +46,16 @@
       <div class="home-inner container">
         <div class="row">
           <div class="col-lg-8 d-none d-lg-block">
-            <h1 class="display-4">Build
-              <strong>social profiles</strong> and gain revenue
-              <strong>profits</strong>
+            <h1 class="display-4">Where Developers
+              <strong>Learn, Share and Build</strong>
+
             </h1>
             <div class="d-flex">
               <div class="p-4 align-self-start">
                 <i class="fas fa-check fa-2x"></i>
               </div>
               <div class="p-4 align-self-end">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed, tempore iusto in minima facere dolorem!
+                  Join the <strong>Indian Institute of Information Technology, Sri City's </strong> developer community.
               </div>
             </div>
 
@@ -106,7 +106,7 @@
     <div class="container">
       <div class="row">
         <div class="col text-center py-5">
-          <h1 class="display-4">Explore</h1>
+          <h1 class="display-4">Learn</h1>
           <p class="lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente doloribus ut iure itaque quibusdam rem accusantium
             deserunt reprehenderit sunt minus.</p>
           <a href="#" class="btn btn-outline-secondary">Find Out More</a>
@@ -153,7 +153,7 @@
     <div class="container">
       <div class="row">
         <div class="col text-center py-5">
-          <h1 class="display-4">Create</h1>
+          <h1 class="display-4">Share</h1>
           <p class="lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente doloribus ut iure itaque quibusdam rem accusantium
             deserunt reprehenderit sunt minus.</p>
           <a href="#" class="btn btn-outline-light">Find Out More</a>
@@ -200,7 +200,7 @@
     <div class="container">
       <div class="row">
         <div class="col text-center py-5">
-          <h1 class="display-4">Share</h1>
+          <h1 class="display-4">Build</h1>
           <p class="lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente doloribus ut iure itaque quibusdam rem accusantium
             deserunt reprehenderit sunt minus.</p>
           <a href="#" class="btn btn-outline-light">Find Out More</a>
