@@ -62,9 +62,7 @@ def home(request):
     }
     return render(request, template, context)
 
-<<<<<<< HEAD
 
-=======
 @login_required
 def posts(request):
     template = 'posts.html'
@@ -96,4 +94,3 @@ def userDetails(request):
              'user':request.user,
     }
     return render(request, template, context)
->>>>>>> 5558f22473329d9c6498d2dcb20d19a93701e87f
