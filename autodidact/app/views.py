@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from app.forms import LoginForm
 
 
 def index(request):
@@ -13,38 +14,17 @@ def index(request):
     return render(request, 'index.html')
 
 
-# def signUpUser(request):
-#     logout(request)
-#     if request.POST:
-#         print(request.POST)
-#         form = SignUpForm(request.POST)
-#         print(form)
-#         if form.is_valid():
-#             new_user = User.objects.create_user(**form.cleaned_data)
-#             new_forum_user = ForumUser()
-#             new_forum_user.user = new_user
-#             new_forum_user.save()
-#             login(request, new_user)
-#             return HttpResponseRedirect(reverse('app:home'))
-#     else:
-#         form = SignUpForm()
-#
-#     return render(request, 'signup.html', {'form': form})
-
-
 def logInUser(request):
-    # logout(request)
+    logout(request)
     if request.POST:
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
-        # user = authenticate(username=username, password=password)
-        user = authenticate(request, username, password)
-        print(type)
-        user_id = 1234;
-        if user_id is not None:
-            # login(request, user)
-            user = User()
+        print(email, password)
 
+        user = stub_auth(email, password)
+
+        if user is not None:
+            login(request, user)
             return HttpResponseRedirect(reverse('app:home'))
         else:
             return HttpResponse('error login')
@@ -58,7 +38,7 @@ def logInUser(request):
 def home(request):
     template = 'home.html'
     context = {
-             'user':request.user,
+        'user': request.user,
     }
     return render(request, template, context)
 
@@ -67,30 +47,46 @@ def home(request):
 def posts(request):
     template = 'posts.html'
     context = {
-             'user':request.user,
+        'user': request.user,
     }
     return render(request, template, context)
+
 
 @login_required
 def tags(request):
     template = 'tags.html'
     context = {
-             'user':request.user,
+        'user': request.user,
     }
     return render(request, template, context)
+
 
 @login_required
 def users(request):
     template = 'users.html'
     context = {
-             'user':request.user,
+        'user': request.user,
     }
     return render(request, template, context)
+
 
 @login_required
 def userDetails(request):
     template = 'profile.html'
     context = {
-             'user':request.user,
+        'user': request.user,
     }
     return render(request, template, context)
+
+
+def stub_auth(email, password):
+    user_dict = {
+        'siddhant.k16@iiits.in': 'siddhant@1234',
+        'prakkash.m16@iiits.in': 'prakkash@1234',
+        'udayraj.s16@iiits.in': 'udayraj@1234'
+    }
+
+    if user_dict[email] == password:
+        return User()
+    else:
+        return None
