@@ -54,7 +54,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'autodidact_forum',
         'USER': 'autodidact_forum',
-        'PASSWORD': 'autodidact_forum@1234',
+        'PASSWORD': 'Autodidact_forum@1234',
         'HOST': '127.0.0.1',
         'PORT': '',
     }
