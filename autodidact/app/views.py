@@ -86,7 +86,16 @@ def stub_auth(email, password):
         'udayraj.s16@iiits.in': 'udayraj@1234'
     }
 
-    if user_dict[email] == password:
-        return User()
-    else:
+    if email not in user_dict.keys():
         return None
+
+    if user_dict[email] != password:
+        return None
+
+    username = 'autodidact_user'
+    password = 'user@2018'
+    user = authenticate(username=username, password=password)
+    return user
+
+def get_session_user():
+    

@@ -60,7 +60,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown mr-3">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-user"></i> {{ user.username}}
+                        <i class="fas fa-user"></i> {{ user.username }}
                     </a>
                     <div class="dropdown-menu">
                         <a href="{% url 'app:userDetails' %}" class="dropdown-item">
@@ -72,13 +72,8 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'app:login' %}" class="nav-link">
-                         <i class="fas fa-user-alt"></i> Login
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'app:signup' %}" class="nav-link">
-                        <i class="fas fa-sign-in-alt"></i>  Signup
+                    <a href="{% url 'app:logout' %}" class="nav-link">
+                        <i class="fas fa-user-alt"></i> Logout
                     </a>
                 </li>
             </ul>
@@ -111,11 +106,11 @@
                     <i class="fas fa-plus"></i> Add Category
                 </a>
             </div>
-{#            <div class="col-md-3">#}
-{#                <a href="#" class="btn btn-warning btn-block" data-toggle="modal" data-target="#addUserModal">#}
-{#                    <i class="fas fa-plus"></i> Add User#}
-{#                </a>#}
-{#            </div>#}
+            {#            <div class="col-md-3">#}
+            {#                <a href="#" class="btn btn-warning btn-block" data-toggle="modal" data-target="#addUserModal">#}
+            {#                    <i class="fas fa-plus"></i> Add User#}
+            {#                </a>#}
+            {#            </div>#}
         </div>
     </div>
 </section>
