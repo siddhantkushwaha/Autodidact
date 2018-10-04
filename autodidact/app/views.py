@@ -22,9 +22,6 @@ def logInUser(request):
         print(email, password)
 
         user_id, user = stub_auth(email, password)
-        print(type(user))
-        print(user_id, user)
-
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('app:home'))
@@ -99,7 +96,6 @@ def stub_auth(email, password):
 
 
 def get_django_user(email, password):
-    # User.objects.get_or_create(username=email, email=email, password=password)
     try:
         user = User.objects.get(username=email)
     except Exception as e:
@@ -111,5 +107,4 @@ def get_django_user(email, password):
         user.save()
 
     user = authenticate(username=email, password=password)
-    print(user)
     return user
