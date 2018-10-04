@@ -97,5 +97,5 @@ def stub_auth(email, password):
     user = authenticate(username=username, password=password)
     return user
 
-def get_session_user():
+# def get_session_user():
     
