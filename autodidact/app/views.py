@@ -21,7 +21,9 @@ def logInUser(request):
         password = request.POST.get('password')
         print(email, password)
 
-        user = stub_auth(email, password)
+        user_id, user = stub_auth(email, password)
+        print(type(user))
+        print(user_id, user)
 
         if user is not None:
             login(request, user)
@@ -81,21 +83,33 @@ def userDetails(request):
 
 def stub_auth(email, password):
     user_dict = {
-        'siddhant.k16@iiits.in': 'siddhant@1234',
-        'prakkash.m16@iiits.in': 'prakkash@1234',
-        'udayraj.s16@iiits.in': 'udayraj@1234'
+        'siddhant.k16@iiits.in': {'password': 'siddhant@1234', 'id': 1},
+        'prakkash.m16@iiits.in': {'password': 'prakkash@1234', 'id': 2},
+        'udayraj.s16@iiits.in': {'password': 'uday@1234', 'id': 3},
     }
 
     if email not in user_dict.keys():
         return None
 
-    if user_dict[email] != password:
+    if user_dict[email]['password'] != password:
         return None
 
-    username = 'autodidact_user'
-    password = 'user@2018'
-    user = authenticate(username=username, password=password)
-    return user
+    user_id = user_dict[email]['id']
+    return user_id, get_django_user(email, password)
 
-def get_session_user():
-    
+
+def get_django_user(email, password):
+    # User.objects.get_or_create(username=email, email=email, password=password)
+    try:
+        user = User.objects.get(username=email)
+    except Exception as e:
+        print(e)
+        user = User()
+        user.username = email
+        user.email = email
+        user.set_password(password)
+        user.save()
+
+    user = authenticate(username=email, password=password)
+    print(user)
+    return user
