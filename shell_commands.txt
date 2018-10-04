@@ -17,7 +17,7 @@ GRANT ALL PRIVILEGES ON DATABASE autodidact_forum TO autodidact_forum;
 
 MYSQL
 
-==> ssh -L 3306:127.0.0.1:3306 autodidact@139.59.68.57 -N
+==> ssh -L 3306:127.0.0.1:3306 autodidact@139.59.58.1 -N
 
 
 
