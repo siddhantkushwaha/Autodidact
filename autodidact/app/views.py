@@ -9,13 +9,16 @@ from app.forms import LoginForm
 
 
 def index(request):
+    template = 'index.html'
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('app:home'))
-    return render(request, 'index.html')
+    return render(request, template)
 
 
 def logInUser(request):
     logout(request)
+
+    template = 'login.html'
     if request.POST:
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -30,7 +33,7 @@ def logInUser(request):
     else:
         form = LoginForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, template, {'form': form})
 
 
 @login_required
@@ -79,6 +82,10 @@ def userDetails(request):
 
 
 def stub_auth(email, password):
+
+    if email == '' or password == '':
+        return None, None
+
     user_dict = {
         'siddhant.k16@iiits.in': {'password': 'siddhant@1234', 'id': 1},
         'prakkash.m16@iiits.in': {'password': 'prakkash@1234', 'id': 2},
