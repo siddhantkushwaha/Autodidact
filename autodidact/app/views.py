@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from app.forms import LoginForm
+from app.models import ForumUser
 
 
 def index(request):
@@ -73,7 +74,7 @@ def users(request):
 
 
 @login_required
-def userDetails(request):
+def user_details(request):
     template = 'profile.html'
     context = {
         'user': request.user,
@@ -82,7 +83,6 @@ def userDetails(request):
 
 
 def stub_auth(email, password):
-
     if email == '' or password == '':
         return None, None
 
@@ -93,16 +93,16 @@ def stub_auth(email, password):
     }
 
     if email not in user_dict.keys():
-        return None
+        return None, None
 
     if user_dict[email]['password'] != password:
-        return None
+        return None, None
 
     user_id = user_dict[email]['id']
-    return user_id, get_django_user(email, password)
+    return user_id, get_forum_user(email, password)
 
 
-def get_django_user(email, password):
+def get_forum_user(email, password):
     try:
         user = User.objects.get(username=email)
     except Exception as e:
@@ -113,5 +113,23 @@ def get_django_user(email, password):
         user.set_password(password)
         user.save()
 
+        forum_user = ForumUser()
+        forum_user.django_user = user
+        forum_user.save()
+
     user = authenticate(username=email, password=password)
     return user
+
+# def get_forum_user(email, p)
+
+@login_required
+def add_tag(request):
+    if request.POST:
+        tag = request.POST.get('tag')
+
+        print(tag)
+        print(ForumUser.objects.get(django_user=request.user))
+
+        return HttpResponse('Done')
+    else:
+        return HttpResponse('This is a get request.')

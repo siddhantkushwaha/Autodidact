@@ -11,8 +11,8 @@ urlpatterns = [
     url(r'^posts$', views.posts, name='posts'),
     url(r'^tags$', views.tags, name='tags'),
     url(r'^users$', views.users, name='users'),
-    url(r'^userDetails$', views.userDetails, name='userDetails'),
-
+    url(r'^userDetails$', views.user_details, name='userDetails'),
+    url(r'^add/tag$', views.add_tag, name='addTag'),
 
     url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]

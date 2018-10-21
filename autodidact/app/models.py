@@ -1,12 +1,10 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
 class ForumUser(models.Model):
-    user_id = models.IntegerField(null=False, unique=True)
+    django_user = models.OneToOneField(User, null=False)
     reputation = models.IntegerField(null=False, default=0)
-
-    def __str__(self):
-        return str(self.user_id)
 
 
 class Tag(models.Model):
