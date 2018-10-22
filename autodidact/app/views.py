@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from app.forms import LoginForm
-from app.models import ForumUser
+from app.models import ForumUser, Tag
 
 
 def index(request):
@@ -58,8 +58,11 @@ def posts(request):
 @login_required
 def tags(request):
     template = 'tags.html'
+    usertags = list(Tag.objects.all())
+    print(usertags)
     context = {
         'user': request.user,
+        'tags' : usertags,
     }
     return render(request, template, context)
 
