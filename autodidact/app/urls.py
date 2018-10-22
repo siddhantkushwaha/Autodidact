@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^users$', views.users, name='users'),
     url(r'^userDetails$', views.user_details, name='userDetails'),
     url(r'^add/tag$', views.add_tag, name='addTag'),
+    url(r'^add/post$', views.add_post, name='addPost'),
 
     url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]

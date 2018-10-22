@@ -1,2 +1,2 @@
 -- set time_zone = '+05:30';
-call addTag("kotlin",1);
+call add_tag("DladdPost",1);

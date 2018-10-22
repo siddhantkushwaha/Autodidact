@@ -1,2 +1,2 @@
 -- DROP PROCEDURE IF EXISTS addPost;
-call addPost("Retrofit","network problems",1);
+call add_post("picasso","transforms",1);

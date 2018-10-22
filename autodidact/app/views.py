@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -43,8 +43,8 @@ def home(request):
     template = 'home.html'
     context = {
         'user': request.user,
-        'posts': Thread.objects.all()[0:6],
-        'tags': Tag.objects.all()[0:6]
+        'posts': Thread.objects.all()[:6],
+        'tags': Tag.objects.all()[:6]
     }
     return render(request, template, context)
 
@@ -149,15 +149,32 @@ def get_forum_user(email, password):
     return user
 
 
-# @login_required
+@login_required
 def add_tag(request):
     if request.POST:
-        print("chcjbi")
-        tag = request.POST.get('tag')
+        tag_name = request.POST.get('tag')
 
-        print(tag)
-        print(ForumUser.objects.get(django_user=request.user))
+        cursor = connection.cursor()
+        query = 'call add_tag("%s", %d)' % (tag_name, ForumUser.objects.get(django_user=request.user).id)
+        print(query)
+        cursor.execute(query)
 
-        return HttpResponse('Done')
+        return HttpResponseRedirect(reverse('app:main'))
+    else:
+        return HttpResponse('This is a get request.')
+
+@login_required
+def add_post(request):
+    if request.POST:
+        print(request.POST)
+        title = request.POST.get('title')
+        description = request.POST.get('editor1')
+
+        cursor = connection.cursor()
+        query = 'call add_post("%s","%s", %d)' % (title,description, ForumUser.objects.get(django_user=request.user).id)
+        print(query)
+        cursor.execute(query)
+
+        return HttpResponseRedirect(reverse('app:main'))
     else:
         return HttpResponse('This is a get request.')
