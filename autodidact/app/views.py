@@ -66,7 +66,7 @@ def get_posts(request):
 @login_required
 def get_tags(request):
     template = 'tags.html'
-    items_per_page = 1
+    items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
     tags = Tag.objects.order_by('use_count')
