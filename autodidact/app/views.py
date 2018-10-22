@@ -16,7 +16,7 @@ def index(request):
     return render(request, template)
 
 
-def logInUser(request):
+def login_user(request):
     logout(request)
 
     template = 'login.html'
@@ -113,6 +113,10 @@ def get_forum_user(email, password):
         user.set_password(password)
         user.save()
 
+    try:
+        ForumUser.objects.get(django_user=user)
+    except Exception as e:
+        print(e)
         forum_user = ForumUser()
         forum_user.django_user = user
         forum_user.save()
@@ -120,9 +124,8 @@ def get_forum_user(email, password):
     user = authenticate(username=email, password=password)
     return user
 
-# def get_forum_user(email, p)
 
-@login_required
+# @login_required
 def add_tag(request):
     if request.POST:
         tag = request.POST.get('tag')

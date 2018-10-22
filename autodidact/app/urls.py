@@ -6,7 +6,7 @@ from app import views
 app_name = 'app'
 urlpatterns = [
     url(r'^$', views.index, name='main'),
-    url(r'^login$', views.logInUser, name='login'),
+    url(r'^login$', views.login_user, name='login'),
     url(r'^home$', views.home, name='home'),
     url(r'^posts$', views.posts, name='posts'),
     url(r'^tags$', views.tags, name='tags'),
