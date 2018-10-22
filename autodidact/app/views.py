@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
 from app.forms import LoginForm
-from app.models import ForumUser, Tag
+from app.models import *
 
 
 def index(request):
@@ -47,22 +48,33 @@ def home(request):
 
 
 @login_required
-def posts(request):
+def get_posts(request):
     template = 'posts.html'
+    items_per_page = 25
+    page = int(request.GET.get(key='page', default=1))
+
+    posts = Thread.objects.all()
+    paginator = Paginator(object_list=posts, per_page=items_per_page)
+
     context = {
         'user': request.user,
+        'items': paginator.page(page),
     }
     return render(request, template, context)
 
 
 @login_required
-def tags(request):
+def get_tags(request):
     template = 'tags.html'
-    usertags = list(Tag.objects.all())
-    print(usertags)
+    items_per_page = 1
+    page = int(request.GET.get(key='page', default=1))
+
+    tags = Tag.objects.order_by('use_count')
+    paginator = Paginator(object_list=tags, per_page=items_per_page)
+
     context = {
         'user': request.user,
-        'tags' : usertags,
+        'items': paginator.page(page),
     }
     return render(request, template, context)
 

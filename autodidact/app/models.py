@@ -6,6 +6,9 @@ class ForumUser(models.Model):
     django_user = models.OneToOneField(User, null=False)
     reputation = models.IntegerField(null=False, default=0)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=20, unique=True)
