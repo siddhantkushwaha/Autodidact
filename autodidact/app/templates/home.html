@@ -18,7 +18,6 @@
             </div>
         </div>
     </header>
-
     <!-- ACTIONS -->
     <section id="actions" class="py-4 mb-4 bg-light">
         <div class="container">
@@ -52,78 +51,60 @@
                             <tr>
                                 <th>#</th>
                                 <th>Title</th>
-                                <th>Category</th>
-                                <th>Date</th>
+                                <th>View Count</th>
+                                <th>Creation Time</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
+                            {% for post in posts %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ post.title }}</td>
+                                    <td>{{ post.view_count }}</td>
+                                    <td>{{ post.creation_time }}</td>
+                                    <td>
+                                        <a href="details.html" class="btn btn-secondary">
+                                            <i class="fas fa-angle-double-right"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">No Posts.</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Latest Tags</h4>
+                        </div>
+                        <table class="table table-striped">
+                            {# TODO #}
+                            <thead class="thead-dark">
                             <tr>
-                                <td>1</td>
-                                <td>Post One</td>
-                                <td>Web Development</td>
-                                <td>May 10 2018</td>
-                                <td>
-                                    <a href="#" class="btn btn-secondary">
-                                        <i class="fas fa-angle-double-right"></i> Details
-                                    </a>
-                                </td>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Use Count</th>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Post Two</td>
-                                <td>Tech Gadgets</td>
-                                <td>May 11 2018</td>
-                                <td>
-                                    <a href="#" class="btn btn-secondary">
-                                        <i class="fas fa-angle-double-right"></i> Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Post Three</td>
-                                <td>Web Development</td>
-                                <td>May 13 2018</td>
-                                <td>
-                                    <a href="#" class="btn btn-secondary">
-                                        <i class="fas fa-angle-double-right"></i> Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Post Four</td>
-                                <td>Business</td>
-                                <td>May 15 2018</td>
-                                <td>
-                                    <a href="#" class="btn btn-secondary">
-                                        <i class="fas fa-angle-double-right"></i> Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Post Five</td>
-                                <td>Web Development</td>
-                                <td>May 17 2018</td>
-                                <td>
-                                    <a href="#" class="btn btn-secondary">
-                                        <i class="fas fa-angle-double-right"></i> Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>Post Six</td>
-                                <td>Health & Wellness</td>
-                                <td>May 20 2018</td>
-                                <td>
-                                    <a href="#" class="btn btn-secondary">
-                                        <i class="fas fa-angle-double-right"></i> Details
-                                    </a>
-                                </td>
-                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for tag in tags %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ tag.name }}</td>
+                                    <td>{{ tag.creation_time }}</td>
+                                    <td>{{ tag.use_count }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">No Tags.</td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -226,15 +207,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="{% url 'app:addTag' %}" method="post">
+                        {% csrf_token %}
                         <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control">
+                            <label for="title">Name of Tag</label>
+                            <input type="text" class="form-control" name="tag">
                         </div>
+
+                        <input type="submit" class="btn btn-success" data-dismiss="modal" value="Save">
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" data-dismiss="modal">Save Changes</button>
                 </div>
             </div>
         </div>

@@ -43,6 +43,8 @@ def home(request):
     template = 'home.html'
     context = {
         'user': request.user,
+        'posts': Thread.objects.all()[0:6],
+        'tags': Tag.objects.all()[0:6]
     }
     return render(request, template, context)
 
@@ -82,8 +84,15 @@ def get_tags(request):
 @login_required
 def users(request):
     template = 'users.html'
+    items_per_page = 25
+    page = int(request.GET.get(key='page', default=1))
+
+    forumUsers = ForumUser.objects.order_by('reputation')
+    paginator = Paginator(object_list=forumUsers, per_page=items_per_page)
+
     context = {
         'user': request.user,
+        'items': paginator.page(page),
     }
     return render(request, template, context)
 
@@ -143,6 +152,7 @@ def get_forum_user(email, password):
 # @login_required
 def add_tag(request):
     if request.POST:
+        print("chcjbi")
         tag = request.POST.get('tag')
 
         print(tag)
