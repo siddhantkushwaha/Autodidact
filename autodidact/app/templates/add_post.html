@@ -1,9 +1,17 @@
 {% extends 'base.html' %}
 
 {% block head_content %}
-{% endblock %}
+    <style>
+        .tag_suggestion_div {
+            width: 100%;
+            background-color: #e2e2e2;
+        }
 
-{% block navbar_content_1 %}
+        .tag_suggestion_p {
+            padding: 10px;
+            margin-block-end: .4em;
+        }
+    </style>
 {% endblock %}
 
 {% block body_content %}
@@ -44,19 +52,25 @@
                         </div>
                         <div class="card-body">
                             <form method="post" action="{% url 'app:addPost' %}">
+
                                 {% csrf_token %}
+
                                 <div class="form-group">
                                     <label for="title">Title</label>
                                     <input name="title" type="text" class="form-control" placeholder="My Question">
                                 </div>
+
                                 <div class="form-group">
                                     <label for="category">Tags</label>
                                     <input type="text" class="form-control" placeholder="Tags"
                                            onkeyup="search_tags(value)">
                                 </div>
-                                <div style="height: 500px; width: max-content">
-
+                                <div id="tag_suggestions" style="height: max-content; width: 100%; margin-bottom: 0px;">
+                                    {# <div class="tag_suggestion_div"> #}
+                                    {# <p class="tag_suggestion_p">firebase</p> #}
+                                    {# </div> #}
                                 </div>
+
                                 <div class="form-group">
                                     <label for="image">Upload an Image</label>
                                     <div class="custom-file">
@@ -65,6 +79,7 @@
                                     </div>
                                     <small class="form-text text-muted">Max Size 3mb</small>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="body">Description</label>
                                     <textarea name="editor1"
@@ -96,6 +111,12 @@
         function search_tags(value) {
             console.log(value)
 
+            const main_div = document.getElementById('tag_suggestions');
+            clear_node(main_div)
+
+            if (value.length == 0)
+                return
+
             $.ajax({
                 type: "GET",
                 url: '{% url 'app:searchTags' %}',
@@ -108,15 +129,34 @@
                 success: function (res) {
                     console.log('Search Successful.')
 
+                    clear_node(main_div)
                     result = res.response
-                    for(var i in result) {
+
+                    for (var i in result) {
                         console.log(result[i].fields.name)
+
+                        tagDiv = document.createElement('div')
+                        tagDiv.className = 'tag_suggestion_div'
+
+                        tagP = document.createElement('p')
+                        tagP.className = 'tag_suggestion_p'
+                        tagP.appendChild(document.createTextNode(result[i].fields.name))
+
+                        tagDiv.appendChild(tagP)
+
+                        main_div.appendChild(tagDiv)
                     }
                 },
                 error: function (res) {
                     console.log('Search Failed.');
                 },
             });
+        }
+
+        function clear_node(node) {
+            while (node.hasChildNodes()) {
+                node.removeChild(node.lastChild)
+            }
         }
     </script>
 {% endblock %}
