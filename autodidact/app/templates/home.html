@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block head_content %}
+    <style>
+    .table{
+        margin-bottom: 0px;
+    }
+    </style>
 {% endblock %}
 
 {% block navbar_content_1 %}
@@ -54,7 +59,6 @@
                                 <th>View Count</th>
                                 <th>Creation Time</th>
                                 <th></th>
-                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -72,14 +76,14 @@
                                 </tr>
                             {% empty %}
                                 <tr>
-                                    <td colspan="4">No Posts.</td>
+                                    <td colspan="5">No Posts.</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
-                <br><br>
-                    <div class="card">
+
+                    <div class="card" style="margin-top: 16px;">
                         <div class="card-header">
                             <h4>Latest Tags</h4>
                         </div>
@@ -172,7 +176,7 @@
                             <input type="text" class="form-control" name="title">
                         </div>
                         <div class="form-group">
-                            <label for="category">Category</label>
+                            <label for="category">Tag</label>
                             <select class="form-control">
                                 <option value="">Web Development</option>
                                 <option value="">Tech Gadgets</option>
@@ -189,15 +193,12 @@
                             <small class="form-text text-muted">Max Size 3mb</small>
                         </div>
                         <div class="form-group">
-                            <label for="body">Body</label>
+                            <label for="body">Description</label>
                             <textarea name="editor1" class="form-control" name="description"></textarea>
                         </div>
-                        <button class="btn btn-primary" >Submit</button>
+                        <button class="btn btn-primary">Submit</button>
                     </form>
                 </div>
-{#                <div class="modal-footer">#}
-{#                    #}
-{#                </div>#}
             </div>
         </div>
     </div>

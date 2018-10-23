@@ -7,17 +7,17 @@ class ForumUser(models.Model):
     reputation = models.IntegerField(null=False, default=0)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.django_user.username)
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=30, unique=True)
     use_count = models.IntegerField(default=0)
     creation_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(ForumUser, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return str(self.name) + ' ;' + str(self.use_count) + ' ;' + str(self.creation_time)
+        return str(self.name) + ' ;' + str(self.created_by)
 
 
 class Thread(models.Model):
