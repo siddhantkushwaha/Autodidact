@@ -26,7 +26,7 @@ class Thread(models.Model):
     view_count = models.IntegerField(default=0)
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
-    creation_time = models.TimeField(auto_now_add=True)
+    creation_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(ForumUser, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
@@ -37,7 +37,7 @@ class Answer(models.Model):
     description = models.IntegerField()
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
-    creation_time = models.TimeField(auto_now_add=True)
+    creation_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(ForumUser, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
@@ -46,7 +46,7 @@ class Answer(models.Model):
 
 class Comment(models.Model):
     description = models.CharField(max_length=100)
-    creation_time = models.TimeField(auto_now_add=True)
+    creation_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(ForumUser, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
