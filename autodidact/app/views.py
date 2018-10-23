@@ -181,10 +181,11 @@ def add_post(request):
 
         return HttpResponseRedirect(reverse('app:main'))
     else:
+        template = 'add_post.html'
         context = {
             'user': request.user
         }
-        return render(request, 'add_post.html', context)
+        return render(request, template, context)
 
 
 def tag_details(request):

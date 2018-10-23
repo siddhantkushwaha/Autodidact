@@ -27,7 +27,7 @@
                 {% if user.is_authenticated %}
                     <div class="col-md-3">
                         <a href="{% url 'app:addPost' %}" class="btn btn-primary btn-block">
-                            <i class="fas fa-plus"></i> Add Post
+                            <i class="fas fa-plus"></i> Ask Question
                         </a>
                     </div>
                     <div class="col-md-3">
@@ -196,7 +196,4 @@
 {% endblock %}
 
 {% block script_content %}
-    <script>
-        CKEDITOR.replace('editor1');
-    </script>
 {% endblock %}
