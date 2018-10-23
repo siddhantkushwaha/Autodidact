@@ -53,6 +53,49 @@ def login_user(request):
     return render(request, template, context)
 
 
+def stub_auth(email, password):
+    if email == '' or password == '':
+        return None, None
+
+    user_dict = {
+        'siddhant.k16@iiits.in': {'password': 'siddhant@1234', 'id': 1},
+        'prakkash.m16@iiits.in': {'password': 'prakkash@1234', 'id': 2},
+        'udayraj.s16@iiits.in': {'password': 'uday@1234', 'id': 3},
+    }
+
+    if email not in user_dict.keys():
+        return None, None
+
+    if user_dict[email]['password'] != password:
+        return None, None
+
+    user_id = user_dict[email]['id']
+    return user_id, get_forum_user(email, password)
+
+
+def get_forum_user(email, password):
+    try:
+        user = User.objects.get(username=email)
+    except Exception as e:
+        print(e)
+        user = User()
+        user.username = email
+        user.email = email
+        user.set_password(password)
+        user.save()
+
+    try:
+        ForumUser.objects.get(django_user=user)
+    except Exception as e:
+        print(e)
+        forum_user = ForumUser()
+        forum_user.django_user = user
+        forum_user.save()
+
+    user = authenticate(username=email, password=password)
+    return user
+
+
 def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
@@ -98,6 +141,32 @@ def get_users(request):
     return render(request, template, context)
 
 
+def tag_details(request):
+    tag_id = request.GET.get('id')
+    tag_obj = Tag.objects.get(pk=tag_id)
+    print(tag_obj)
+    template = 'tag_details.html'
+    context = {
+        'user': request.user,
+        'tag': tag_obj
+    }
+    print(context['tag'].name)
+    return render(request, template, context)
+
+
+def user_details(request):
+    user_id = request.GET.get('id')
+    print(user_id)
+    user_obj = ForumUser.objects.get(pk=user_id)
+    print(user_obj)
+    template = 'user_details.html'
+    context = {
+        'user': request.user,
+        'user_obj': user_obj
+    }
+    return render(request, template, context)
+
+
 @login_required
 def user_profile(request):
     template = 'profile.html'
@@ -105,49 +174,6 @@ def user_profile(request):
         'user': request.user,
     }
     return render(request, template, context)
-
-
-def stub_auth(email, password):
-    if email == '' or password == '':
-        return None, None
-
-    user_dict = {
-        'siddhant.k16@iiits.in': {'password': 'siddhant@1234', 'id': 1},
-        'prakkash.m16@iiits.in': {'password': 'prakkash@1234', 'id': 2},
-        'udayraj.s16@iiits.in': {'password': 'uday@1234', 'id': 3},
-    }
-
-    if email not in user_dict.keys():
-        return None, None
-
-    if user_dict[email]['password'] != password:
-        return None, None
-
-    user_id = user_dict[email]['id']
-    return user_id, get_forum_user(email, password)
-
-
-def get_forum_user(email, password):
-    try:
-        user = User.objects.get(username=email)
-    except Exception as e:
-        print(e)
-        user = User()
-        user.username = email
-        user.email = email
-        user.set_password(password)
-        user.save()
-
-    try:
-        ForumUser.objects.get(django_user=user)
-    except Exception as e:
-        print(e)
-        forum_user = ForumUser()
-        forum_user.django_user = user
-        forum_user.save()
-
-    user = authenticate(username=email, password=password)
-    return user
 
 
 @login_required
@@ -183,32 +209,6 @@ def add_post(request):
     else:
         template = 'add_post.html'
         context = {
-            'user': request.user
+            'user': request.user,
         }
         return render(request, template, context)
-
-
-def tag_details(request):
-    tag_id = request.GET.get('id')
-    tag_obj = Tag.objects.get(pk=tag_id)
-    print(tag_obj)
-    template = 'tag_details.html'
-    context = {
-        'user': request.user,
-        'tag': tag_obj
-    }
-    print(context['tag'].name)
-    return render(request, template, context)
-
-
-def user_details(request):
-    user_id = request.GET.get('id')
-    print(user_id)
-    user_obj = ForumUser.objects.get(pk=user_id)
-    print(user_obj)
-    template = 'user_details.html'
-    context = {
-        'user': request.user,
-        'user_obj' : user_obj
-    }
-    return render(request, template, context)
