@@ -10,37 +10,9 @@ from app.forms import LoginForm
 from app.models import *
 
 
-def index(request):
+def main(request):
     template = 'index.html'
-    if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('app:home'))
-    return render(request, template)
 
-
-def login_user(request):
-    logout(request)
-
-    template = 'login.html'
-    if request.POST:
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        print(email, password)
-
-        user_id, user = stub_auth(email, password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('app:home'))
-        else:
-            return HttpResponse('error login')
-    else:
-        form = LoginForm()
-
-    return render(request, template, {'form': form})
-
-
-@login_required
-def home(request):
-    template = 'home.html'
     n_users = len(ForumUser.objects.all())
     n_tags = len(Tag.objects.all())
     n_posts = len(Thread.objects.all())
@@ -56,7 +28,31 @@ def home(request):
     return render(request, template, context)
 
 
-@login_required
+def login_user(request):
+    logout(request)
+
+    template = 'login.html'
+    if request.POST:
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(email, password)
+
+        user_id, user = stub_auth(email, password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('app:main'))
+        else:
+            return HttpResponse('error login')
+    else:
+        form = LoginForm()
+
+    context = {
+        'user': request.user,
+        'form': form
+    }
+    return render(request, template, context)
+
+
 def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
@@ -72,7 +68,6 @@ def get_posts(request):
     return render(request, template, context)
 
 
-@login_required
 def get_tags(request):
     template = 'tags.html'
     items_per_page = 25
@@ -88,7 +83,6 @@ def get_tags(request):
     return render(request, template, context)
 
 
-@login_required
 def get_users(request):
     template = 'users.html'
     items_per_page = 25
@@ -181,7 +175,7 @@ def add_post(request):
 
         cursor = connection.cursor()
         query = 'call add_post("%s","%s", %d)' % (
-        title, description, ForumUser.objects.get(django_user=request.user).id)
+            title, description, ForumUser.objects.get(django_user=request.user).id)
         print(query)
         cursor.execute(query)
 
@@ -190,7 +184,6 @@ def add_post(request):
         return HttpResponse('This is a get request.')
 
 
-@login_required
 def tag_details(request):
     tag_id = request.GET.get('id')
     tag_obj = Tag.objects.get(pk=tag_id)
@@ -204,7 +197,6 @@ def tag_details(request):
     return render(request, template, context)
 
 
-@login_required
 def user_details(request):
     user_id = request.GET.get('id')
     print(user_id)
