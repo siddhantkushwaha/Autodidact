@@ -41,10 +41,17 @@ def login_user(request):
 @login_required
 def home(request):
     template = 'home.html'
+    n_users = len(ForumUser.objects.all())
+    n_tags = len(Tag.objects.all())
+    n_posts = len(Thread.objects.all())
+
     context = {
         'user': request.user,
         'posts': Thread.objects.all()[:6],
-        'tags': Tag.objects.all()[:6]
+        'tags': Tag.objects.all()[:6],
+        'n_posts': n_posts,
+        'n_tags' : n_tags,
+        'n_users': n_users
     }
     return render(request, template, context)
 
@@ -98,7 +105,7 @@ def users(request):
 
 
 @login_required
-def user_details(request):
+def user_details_update(request):
     template = 'profile.html'
     context = {
         'user': request.user,
@@ -178,3 +185,24 @@ def add_post(request):
         return HttpResponseRedirect(reverse('app:main'))
     else:
         return HttpResponse('This is a get request.')
+
+@login_required
+def tag_details(request):
+    tag_id = request.GET.get('id')
+    tag_obj = Tag.objects.get(pk=tag_id)
+    print(tag_obj)
+    template = 'tag_details.html'
+    context = {
+        'user': request.user,
+        'tag' : tag_obj
+    }
+    print(context['tag'].name)
+    return render(request, template, context)
+
+@login_required
+def user_details(request):
+    template = 'user_details.html'
+    context = {
+        'user': request.user,
+    }
+    return render(request, template, context)

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block head_content %}
+{% endblock %}
+
+{% block navbar_content_1 %}
+{% endblock %}
+
+{% block body_content %}
+    <!-- HEADER -->
+    <header id="main-header" class="py-2 bg-success text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fas fa-folder"></i>  Tags</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SEARCH -->
+    <section id="search" class="py-4 mb-4 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 ml-auto">
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="categories">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card text-center">
+                              <div class="card-header">
+                                  <h5 class="card-title">Name of Tag {{ tag.name }}</h5>
+                              </div>
+                              <div class="card-body">
+                                  <h6 class="card-text">Created by {{ tag.created_by.django_user.username }}  <i class="fas fa-user-secret"> </i> </h6>
+                                  <h6 class="card-text">Use Count {{ tag.use_count }}   <i class="fas fa-at"></i> </h6>
+                                <a href="#" class="btn btn-success">See Profile</a>
+                              </div>
+                              <div class="card-footer text-muted">
+                                Creation Time {{ tag.creation_time }}
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block below_footer_content %}
+{% endblock %}
+
+{% block script_content %}
+{% endblock %}
+
+{#<div class="card" style="width: 18rem;">#}
+{#  <img class="card-img-top" src="..." alt="Card image cap">#}
+{#  <div class="card-body">#}
+{#    <h5 class="card-title">Card title</h5>#}
+{#    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>#}
+{#  </div>#}
+{#  <ul class="list-group list-group-flush">#}
+{#    <li class="list-group-item">Cras justo odio</li>#}
+{#    <li class="list-group-item">Dapibus ac facilisis in</li>#}
+{#    <li class="list-group-item">Vestibulum at eros</li>#}
+{#  </ul>#}
+{#  <div class="card-body">#}
+{#    <a href="#" class="card-link">Card link</a>#}
+{#    <a href="#" class="card-link">Another link</a>#}
+{#  </div>#}
+{#</div>#}
