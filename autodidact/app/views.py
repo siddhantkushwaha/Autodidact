@@ -184,7 +184,6 @@ def add_post(request):
         return HttpResponse('This is a get request.')
 
 
-@login_required
 def tag_details(request):
     tag_id = request.GET.get('id')
     tag_obj = Tag.objects.get(pk=tag_id)
@@ -198,7 +197,6 @@ def tag_details(request):
     return render(request, template, context)
 
 
-@login_required
 def user_details(request):
     user_id = request.GET.get('id')
     print(user_id)
