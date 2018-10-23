@@ -71,7 +71,7 @@ def get_tags(request):
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
-    tags = Tag.objects.order_by('use_count')
+    tags = Tag.objects.order_by('use_count').order_by('id')
     paginator = Paginator(object_list=tags, per_page=items_per_page)
 
     context = {
@@ -155,8 +155,9 @@ def add_tag(request):
         tag_name = request.POST.get('tag')
 
         cursor = connection.cursor()
-        query = 'call add_tag("%s", %d)' % (tag_name, ForumUser.objects.get(django_user=request.user).id)
-        print(query)
+        forum_user_id = ForumUser.objects.get(django_user=request.user).id
+
+        query = 'call add_tag("%s", %d)' % (tag_name, forum_user_id)
         cursor.execute(query)
 
         return HttpResponseRedirect(reverse('app:main'))
