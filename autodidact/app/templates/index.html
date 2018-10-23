@@ -100,6 +100,7 @@
                                 <th>Title</th>
                                 <th>Date</th>
                                 <th>Use Count</th>
+                                <th>Details</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -109,6 +110,11 @@
                                     <td>{{ tag.name }}</td>
                                     <td>{{ tag.creation_time }}</td>
                                     <td>{{ tag.use_count }}</td>
+                                    <td>
+                                        <a href="{% url 'app:tagDetails' %}?id={{ tag.id }}" class="btn btn-secondary">
+                                            <i class="fas fa-angle-double-right"></i> Details
+                                        </a>
+                                    </td>
                                 </tr>
                             {% empty %}
                                 <tr>
