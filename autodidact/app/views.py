@@ -89,7 +89,7 @@ def get_tags(request):
 
 
 @login_required
-def users(request):
+def get_users(request):
     template = 'users.html'
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
