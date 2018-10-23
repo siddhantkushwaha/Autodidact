@@ -1,3 +1,0 @@
--- DROP PROCEDURE IF EXISTS addTag;
--- DROP PROCEDURE IF EXISTS addPost;
-select now();
