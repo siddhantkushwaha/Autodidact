@@ -105,7 +105,7 @@ def users(request):
 
 
 @login_required
-def user_details_update(request):
+def user_profile(request):
     template = 'profile.html'
     context = {
         'user': request.user,
