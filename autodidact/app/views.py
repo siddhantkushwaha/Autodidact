@@ -43,8 +43,8 @@ def home(request):
     template = 'home.html'
     context = {
         'user': request.user,
-        'posts': Thread.objects.all()[:6],
-        'tags': Tag.objects.all()[:6]
+        'posts': Thread.objects.order_by('-id')[:6],
+        'tags': Tag.objects.order_by('-id')[:6]
     }
     return render(request, template, context)
 
