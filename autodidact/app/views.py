@@ -15,11 +15,11 @@ def main(request):
 
     n_users = len(ForumUser.objects.all())
     n_tags = len(Tag.objects.all())
-    n_posts = len(Thread.objects.all())
+    n_posts = len(Post.objects.all())
 
     context = {
         'user': request.user,
-        'posts': Thread.objects.order_by('-id')[:6],
+        'posts': Post.objects.order_by('-id')[:6],
         'tags': Tag.objects.order_by('-id')[:6],
         'n_posts': n_posts,
         'n_tags': n_tags,
@@ -58,7 +58,7 @@ def get_posts(request):
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
-    posts = Thread.objects.all()
+    posts = Post.objects.all()
     paginator = Paginator(object_list=posts, per_page=items_per_page)
 
     context = {

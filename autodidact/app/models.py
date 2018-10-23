@@ -20,7 +20,7 @@ class Tag(models.Model):
         return str(self.name) + ' ;' + str(self.created_by)
 
 
-class Thread(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
     view_count = models.IntegerField(default=0)
