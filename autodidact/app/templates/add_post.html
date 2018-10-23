@@ -62,7 +62,7 @@
 
                                 <div class="form-group">
                                     <label for="category">Tags</label>
-                                    <input type="text" class="form-control" placeholder="Tags"
+                                    <input id="tags" type="text" class="form-control" placeholder="Tags"
                                            onkeyup="search_tags(value)">
                                 </div>
                                 <div id="tag_suggestions" style="height: max-content; width: 100%; margin-bottom: 0px;">
@@ -110,13 +110,6 @@
     <script>
         function search_tags(value) {
             console.log(value)
-
-            const main_div = document.getElementById('tag_suggestions');
-            clear_node(main_div)
-
-            if (value.length == 0)
-                return
-
             $.ajax({
                 type: "GET",
                 url: '{% url 'app:searchTags' %}',
@@ -127,11 +120,21 @@
                 },
 
                 success: function (res) {
-                    console.log('Search Successful.')
+                    console.log('Search Successful for ' + value)
 
+                    const main_div = document.getElementById('tag_suggestions');
                     clear_node(main_div)
-                    result = res.response
 
+                    if (value.length == 0)
+                        return
+
+                    const curr_val = document.getElementById('tags').value
+                    if (value = !curr_val)
+                        return
+
+                    console.log(curr_val)
+
+                    result = res.response
                     for (var i in result) {
                         console.log(result[i].fields.name)
 
