@@ -11,11 +11,11 @@ urlpatterns = [
     url(r'^posts$', views.get_posts, name='posts'),
     url(r'^tags$', views.get_tags, name='tags'),
     url(r'^users$', views.users, name='users'),
-    url(r'^userDetails$', views.user_details_update, name='userDetails'),
+    url(r'^profile$', views.user_details_update, name='profile'),
     url(r'^add/tag$', views.add_tag, name='addTag'),
     url(r'^add/post$', views.add_post, name='addPost'),
-    url(r'^tags/details$', views.tag_details, name='tagDetails'),
-    url(r'^users/details$', views.user_details, name='userDetails'),
+    url(r'^tag/details$', views.tag_details, name='tagDetails'),
+    url(r'^user/details$', views.user_details, name='userDetails'),
 
     url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]

@@ -51,6 +51,7 @@
                                 <th>Email</th>
                                 <th>Date Joined</th>
                                 <th>Reputation</th>
+                                <th>Details</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -63,7 +64,7 @@
                                     <td>{{ user.django_user.date_joined }}</td>
                                     <td>{{ user.reputation }}</td>
                                     <td>
-                                        <a href="details.html" class="btn btn-secondary">
+                                        <a href="{% url 'app:userDetails' %}?id={{ user.id }}" class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>
                                     </td>

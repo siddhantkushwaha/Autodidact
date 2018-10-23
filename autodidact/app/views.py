@@ -206,6 +206,10 @@ def tag_details(request):
 
 @login_required
 def user_details(request):
+    user_id = request.GET.get('id')
+    print(user_id)
+    user_obj = ForumUser.objects.get(pk=user_id)
+    print(user_obj)
     template = 'user_details.html'
     context = {
         'user': request.user,
