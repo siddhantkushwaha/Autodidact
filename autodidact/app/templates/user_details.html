@@ -1,6 +1,31 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block head_content %}
+    <style>
+    .wrap
+    {
+        padding: 30px;
+    }
+
+    .glyphicon
+    {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    small
+    {
+        display: block;
+        color: #888;
+    }
+
+    .well
+    {
+        border: 1px solid black;
+        padding: 2px;
+    }
+</style>
 {% endblock %}
 
 {% block navbar_content_1 %}
@@ -8,12 +33,12 @@
 
 {% block body_content %}
     <!-- HEADER -->
-    <header id="main-header" class="py-2 bg-success text-white">
+    <header id="main-header" class="py-2 bg-warning text-white">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
                     <h1>
-                        <i class="fas fa-folder"></i>  Tags</h1>
+                        <i class="fas fa-users"></i>    Users</h1>
                 </div>
             </div>
         </div>
@@ -32,18 +57,28 @@
 
     <!-- CATEGORIES -->
     <section id="categories">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <div class="card text-center" style="width: 18rem;">
-                          <img class="card-img-top" src="..." alt="Card image cap">
+        <div class="container wrap">
+    <div class="row">
+        <div class="col-lg-8 col-md-6 offset-md-2">
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-3 col-md-7 col-lg-7">
+                        <img src="{% static 'app/img/avatar.png' %}" alt="" class="img-rounded img-fluid" />
+                    </div>
+                    <div class="col-sm-8 col-md-6 col-lg-5">
+                        <h4 style=" margin-top:30px ;">{{ user_obj.django_user.username }}</h4>
+                        <p> <i class="fas fa-at"></i>  &nbsp;&nbsp; Email <br> {{ user_obj.django_user.username }} </p>
+                        <p> <i class="fas fa-calendar-alt"></i>  &nbsp;&nbsp; Date Joined <br>{{ user_obj.django_user.date_joined }}  </p>
+                        <div class="col-md-8 col-md-8 col-lg-5">
+                        <small><cite title="San Diego, USA">Last Login {{ user_obj.django_user.last_login }}</cite></small>
                         </div>
-                         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
     </section>
 {% endblock %}
 

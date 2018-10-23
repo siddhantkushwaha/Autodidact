@@ -213,5 +213,6 @@ def user_details(request):
     template = 'user_details.html'
     context = {
         'user': request.user,
+        'user_obj' : user_obj
     }
     return render(request, template, context)
