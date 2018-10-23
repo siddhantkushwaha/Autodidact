@@ -51,12 +51,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="category">Tags</label>
-                                    <select class="form-control">
-                                        <option value="" selected>Web Development</option>
-                                        <option value="">Tech Gadgets</option>
-                                        <option value="">Business</option>
-                                        <option value="">Health & Wellness</option>
-                                    </select>
+                                    <input type="text" class="form-control" placeholder="Tags"
+                                           onkeyup="search_tags(value)">
+                                </div>
+                                <div style="height: 500px; width: max-content">
+
                                 </div>
                                 <div class="form-group">
                                     <label for="image">Upload an Image</label>
@@ -68,7 +67,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="body">Description</label>
-                                    <textarea name="editor1" class="form-control">Describe your problem in detail.</textarea>
+                                    <textarea name="editor1"
+                                              class="form-control">Describe your problem in detail.</textarea>
                                 </div>
 
                                 <button type="submit" style="float: right;" class="btn btn-success"><i
@@ -91,5 +91,32 @@
     <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('editor1');
+    </script>
+    <script>
+        function search_tags(value) {
+            console.log(value)
+
+            $.ajax({
+                type: "GET",
+                url: '{% url 'app:searchTags' %}',
+                dataType: 'json',
+                data: {
+                    'query': value,
+                    'limit': 6
+                },
+
+                success: function (res) {
+                    console.log('Search Successful.')
+
+                    result = res.response
+                    for(var i in result) {
+                        console.log(result[i].fields.name)
+                    }
+                },
+                error: function (res) {
+                    console.log('Search Failed.');
+                },
+            });
+        }
     </script>
 {% endblock %}

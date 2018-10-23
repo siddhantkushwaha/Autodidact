@@ -7,14 +7,19 @@ app_name = 'app'
 urlpatterns = [
     url(r'^$', views.main, name='main'),
     url(r'^login$', views.login_user, name='login'),
+    url(r'^profile$', views.user_profile, name='userProfile'),
+
     url(r'^posts$', views.get_posts, name='posts'),
     url(r'^tags$', views.get_tags, name='tags'),
     url(r'^users$', views.get_users, name='users'),
-    url(r'^user/profile$', views.user_profile, name='userProfile'),
-    url(r'^add/tag$', views.add_tag, name='addTag'),
-    url(r'^add/post$', views.add_post, name='addPost'),
+
     url(r'^tag/details$', views.tag_details, name='tagDetails'),
     url(r'^user/details$', views.user_details, name='userDetails'),
+
+    url(r'^add/tag$', views.add_tag, name='addTag'),
+    url(r'^add/post$', views.add_post, name='addPost'),
+
+    url(r'^search/tags$', views.search_tags, name='searchTags'),
 
     url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]

@@ -1,10 +1,14 @@
+import json
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.paginator import Paginator
 from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from app.forms import LoginForm
 from app.models import *
@@ -96,6 +100,15 @@ def get_forum_user(email, password):
     return user
 
 
+@login_required
+def user_profile(request):
+    template = 'profile.html'
+    context = {
+        'user': request.user,
+    }
+    return render(request, template, context)
+
+
 def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
@@ -124,6 +137,19 @@ def get_tags(request):
         'items': paginator.page(page),
     }
     return render(request, template, context)
+
+
+def search_tags(request):
+    query = request.GET.get('query')
+    limit = int(request.GET.get('limit', default=-1))
+
+    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
+    if limit != -1:
+        tags = tags[: limit]
+
+    tags = json.loads(serializers.serialize("json", tags))
+
+    return JsonResponse({'response': tags})
 
 
 def get_users(request):
@@ -163,15 +189,6 @@ def user_details(request):
     context = {
         'user': request.user,
         'user_obj': user_obj
-    }
-    return render(request, template, context)
-
-
-@login_required
-def user_profile(request):
-    template = 'profile.html'
-    context = {
-        'user': request.user,
     }
     return render(request, template, context)
 
