@@ -26,7 +26,7 @@
             <div class="row">
                 {% if user.is_authenticated %}
                     <div class="col-md-3">
-                        <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addPostModal">
+                        <a href="{% url 'app:addPost' %}" class="btn btn-primary btn-block">
                             <i class="fas fa-plus"></i> Add Post
                         </a>
                     </div>
@@ -168,50 +168,6 @@
 
 {% block below_footer_content %}
     <!-- MODALS -->
-    <!-- ADD POST MODAL -->
-    <div class="modal fade" id="addPostModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Add Post</h5>
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{% url 'app:addPost' %}" method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" class="form-control" name="title">
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Tag</label>
-                            <select class="form-control">
-                                <option value="">Web Development</option>
-                                <option value="">Tech Gadgets</option>
-                                <option value="">Business</option>
-                                <option value="">Health & Wellness</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Upload Image</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="image">
-                                <label for="image" class="custom-file-label">Choose File</label>
-                            </div>
-                            <small class="form-text text-muted">Max Size 3mb</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="body">Description</label>
-                            <textarea name="editor1" class="form-control" name="description"></textarea>
-                        </div>
-                        <button class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- ADD CATEGORY MODAL -->
     <div class="modal fade" id="addCategoryModal">

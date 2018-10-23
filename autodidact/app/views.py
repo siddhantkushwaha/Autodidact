@@ -181,7 +181,10 @@ def add_post(request):
 
         return HttpResponseRedirect(reverse('app:main'))
     else:
-        return HttpResponse('This is a get request.')
+        context = {
+            'user': request.user
+        }
+        return render(request, 'add_post.html', context)
 
 
 def tag_details(request):
