@@ -107,18 +107,6 @@ def user_profile(request):
     }
     return render(request, template, context)
 
-def search_tags(request):
-    query = request.GET.get('query')
-    limit = int(request.GET.get('limit', default=-1))
-
-    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
-    if limit != -1:
-        tags = tags[: limit]
-
-    tags = json.loads(serializers.serialize("json", tags))
-
-    return JsonResponse({'response': tags})
-
 
 def get_posts(request):
     template = 'posts.html'
@@ -157,6 +145,19 @@ def get_tags(request):
         'items': paginator.page(page),
     }
     return render(request, template, context)
+
+
+def search_tags(request):
+    query = request.GET.get('query')
+    limit = int(request.GET.get('limit', default=-1))
+
+    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
+    if limit != -1:
+        tags = tags[: limit]
+
+    tags = json.loads(serializers.serialize("json", tags))
+
+    return JsonResponse({'response': tags})
 
 
 def get_users(request):
@@ -242,15 +243,17 @@ def add_tag(request):
 @login_required
 def add_post(request):
     if request.POST:
-        # print(request.POST)
         title = request.POST.get('title')
         description = request.POST.get('editor1')
 
-        cursor = connection.cursor()
-        query = 'call add_post("%s","%s", %d)' % (
-            title, description, ForumUser.objects.get(django_user=request.user).id)
-        # print(query)
-        cursor.execute(query)
+        post = Post()
+        post.title = title
+        post.description = description
+        post.save()
+
+        # tag = Tag.objects.get(id=9)
+        # post.tags.add(tag)
+        post.save()
 
         return HttpResponseRedirect(reverse('app:main'))
     else:
