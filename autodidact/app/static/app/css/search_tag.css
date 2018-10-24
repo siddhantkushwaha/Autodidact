@@ -1,0 +1,43 @@
+#tag_suggestions {
+    height: max-content;
+    width: 100%;
+    margin-bottom: 12px;
+    display: none;
+}
+
+.tag_suggestion_div {
+    width: 100%;
+    background-color: #e2e2e2;
+}
+
+.tag_suggestion_p {
+    padding: 10px;
+    margin-block-end: 0px;
+}
+
+.tag_suggestion_div:hover {
+    background-color: #c4c4c4;
+}
+
+#tag_applied {
+    height: max-content;
+    width: 100%;
+    margin-bottom: 8px;
+    display: none;
+}
+
+.tag_applied_div {
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    background-color: #007bff;
+}
+
+.tag_applied_p {
+    padding: 10px;
+    margin-block-end: 0px;
+}
+
+.tag_applied_div:hover {
+    background-color: #006dd9;
+}
