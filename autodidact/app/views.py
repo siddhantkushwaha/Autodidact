@@ -112,8 +112,12 @@ def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
-
     posts = Post.objects.all()
+
+    query = request.GET.get('query')
+    if query is not None:
+        posts = posts.filter(title__icontains=query)
+
     paginator = Paginator(object_list=posts, per_page=items_per_page)
 
     context = {
@@ -129,6 +133,11 @@ def get_tags(request):
     page = int(request.GET.get(key='page', default=1))
 
     tags = Tag.objects.order_by('use_count').order_by('id')
+
+    query = request.GET.get('query')
+    if query is not None:
+        tags = tags.filter(name__icontains=query)
+
     paginator = Paginator(object_list=tags, per_page=items_per_page)
 
     context = {
@@ -157,6 +166,11 @@ def get_users(request):
     page = int(request.GET.get(key='page', default=1))
 
     forumUsers = ForumUser.objects.order_by('reputation')
+
+    query = request.GET.get('query')
+    if query is not None:
+        forumUsers = forumUsers.filter(django_user__email__icontains=query)
+
     paginator = Paginator(object_list=forumUsers, per_page=items_per_page)
 
     context = {
