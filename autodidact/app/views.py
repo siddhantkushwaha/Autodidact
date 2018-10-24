@@ -228,15 +228,17 @@ def add_tag(request):
 @login_required
 def add_post(request):
     if request.POST:
-        print(request.POST)
         title = request.POST.get('title')
         description = request.POST.get('editor1')
 
-        cursor = connection.cursor()
-        query = 'call add_post("%s","%s", %d)' % (
-            title, description, ForumUser.objects.get(django_user=request.user).id)
-        print(query)
-        cursor.execute(query)
+        post = Post()
+        post.title = title
+        post.description = description
+        post.save()
+
+        # tag = Tag.objects.get(id=9)
+        # post.tags.add(tag)
+        post.save()
 
         return HttpResponseRedirect(reverse('app:main'))
     else:
