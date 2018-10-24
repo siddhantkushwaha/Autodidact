@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^add/post$', views.add_post, name='addPost'),
 
     url(r'^search/tags$', views.search_tags, name='searchTags'),
+    # url(r'^search/users$', views.search_users, name='searchUsers'),
 
     url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]

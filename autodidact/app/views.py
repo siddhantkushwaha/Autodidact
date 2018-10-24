@@ -107,13 +107,29 @@ def user_profile(request):
     }
     return render(request, template, context)
 
+def search_tags(request):
+    query = request.GET.get('query')
+    limit = int(request.GET.get('limit', default=-1))
+
+    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
+    if limit != -1:
+        tags = tags[: limit]
+
+    tags = json.loads(serializers.serialize("json", tags))
+
+    return JsonResponse({'response': tags})
+
 
 def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
-
     posts = Post.objects.all()
+
+    query = request.GET.get('query')
+    if query is not None:
+        posts = posts.filter(title__icontains=query)
+
     paginator = Paginator(object_list=posts, per_page=items_per_page)
 
     context = {
@@ -129,6 +145,11 @@ def get_tags(request):
     page = int(request.GET.get(key='page', default=1))
 
     tags = Tag.objects.order_by('use_count').order_by('id')
+
+    query = request.GET.get('query')
+    if query is not None:
+        tags = tags.filter(name__icontains=query)
+
     paginator = Paginator(object_list=tags, per_page=items_per_page)
 
     context = {
@@ -138,25 +159,17 @@ def get_tags(request):
     return render(request, template, context)
 
 
-def search_tags(request):
-    query = request.GET.get('query')
-    limit = int(request.GET.get('limit', default=-1))
-
-    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
-    if limit != -1:
-        tags = tags[: limit]
-
-    tags = json.loads(serializers.serialize("json", tags))
-
-    return JsonResponse({'response': tags})
-
-
 def get_users(request):
     template = 'users.html'
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
     forumUsers = ForumUser.objects.order_by('reputation')
+
+    query = request.GET.get('query')
+    if query is not None:
+        forumUsers = forumUsers.filter(django_user__email__icontains=query)
+
     paginator = Paginator(object_list=forumUsers, per_page=items_per_page)
 
     context = {
@@ -228,14 +241,14 @@ def add_tag(request):
 @login_required
 def add_post(request):
     if request.POST:
-        print(request.POST)
+        # print(request.POST)
         title = request.POST.get('title')
         description = request.POST.get('editor1')
 
         cursor = connection.cursor()
         query = 'call add_post("%s","%s", %d)' % (
             title, description, ForumUser.objects.get(django_user=request.user).id)
-        print(query)
+        # print(query)
         cursor.execute(query)
 
         return HttpResponseRedirect(reverse('app:main'))
