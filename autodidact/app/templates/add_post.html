@@ -109,7 +109,7 @@
     </script>
     <script>
         function search_tags(value) {
-            console.log(value)
+            console.log(value);
             $.ajax({
                 type: "GET",
                 url: '{% url 'app:searchTags' %}',
@@ -120,34 +120,33 @@
                 },
 
                 success: function (res) {
-                    console.log('Search Successful for ' + value)
+                    console.log('Search Successful for ' + value);
 
                     const main_div = document.getElementById('tag_suggestions');
-                    clear_node(main_div)
+                    clear_node(main_div);
 
-                    if (value.length == 0)
-                        return
+                    if (value.length === 0)
+                        return;
 
-                    const curr_val = document.getElementById('tags').value
-                    if (value = !curr_val)
-                        return
+                    const curr_val = document.getElementById('tags').value;
+                    if (value !== curr_val)
+                        return;
 
-                    console.log(curr_val)
+                    console.log('Showing results for ' + value);
+                    console.log('Current val is ' + curr_val);
 
-                    result = res.response
-                    for (var i in result) {
-                        console.log(result[i].fields.name)
+                    let result = res.response;
+                    for (let i in result) {
 
-                        tagDiv = document.createElement('div')
-                        tagDiv.className = 'tag_suggestion_div'
+                        let tagDiv = document.createElement('div');
+                        tagDiv.className = 'tag_suggestion_div';
 
-                        tagP = document.createElement('p')
-                        tagP.className = 'tag_suggestion_p'
-                        tagP.appendChild(document.createTextNode(result[i].fields.name))
+                        let tagP = document.createElement('p');
+                        tagP.className = 'tag_suggestion_p';
 
-                        tagDiv.appendChild(tagP)
-
-                        main_div.appendChild(tagDiv)
+                        tagP.appendChild(document.createTextNode(result[i]['fields']['name']));
+                        tagDiv.appendChild(tagP);
+                        main_div.appendChild(tagDiv);
                     }
                 },
                 error: function (res) {
