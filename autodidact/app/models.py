@@ -23,6 +23,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
+    tags = models.ManyToManyField(Tag)
     view_count = models.IntegerField(default=0)
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
