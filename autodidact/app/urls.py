@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^tags$', views.get_tags, name='tags'),
     url(r'^users$', views.get_users, name='users'),
 
+    url(r'^post/details$', views.post_details, name='postDetails'),
     url(r'^tag/details$', views.tag_details, name='tagDetails'),
     url(r'^user/details$', views.user_details, name='userDetails'),
 
