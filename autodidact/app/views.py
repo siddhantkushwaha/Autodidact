@@ -165,7 +165,8 @@ def get_users(request):
     }
     return render(request, template, context)
 
-@login_required
+
+# Authentication isn't necessary for viewing the details page
 def post_details(request):
     post_id = request.GET.get('id')
     # print(post_id)
@@ -179,7 +180,8 @@ def post_details(request):
     # print(context['post'].title)
     return render(request, template, context)
 
-@login_required
+
+# Authentication isn't necessary for viewing the details page
 def tag_details(request):
     tag_id = request.GET.get('id')
     tag_obj = Tag.objects.get(pk=tag_id)
@@ -192,7 +194,8 @@ def tag_details(request):
     # print(context['tag'].name)
     return render(request, template, context)
 
-@login_required
+
+# Authentication isn't necessary for viewing the details page
 def user_details(request):
     user_id = request.GET.get('id')
     # print(user_id)
