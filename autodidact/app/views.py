@@ -165,25 +165,39 @@ def get_users(request):
     }
     return render(request, template, context)
 
+@login_required
+def post_details(request):
+    post_id = request.GET.get('id')
+    # print(post_id)
+    post_obj = Post.objects.get(pk=post_id)
+    # print(post_obj)
+    template = 'post_details.html'
+    context = {
+        'user': request.user,
+        'post': post_obj
+    }
+    # print(context['post'].title)
+    return render(request, template, context)
 
+@login_required
 def tag_details(request):
     tag_id = request.GET.get('id')
     tag_obj = Tag.objects.get(pk=tag_id)
-    print(tag_obj)
+    # print(tag_obj)
     template = 'tag_details.html'
     context = {
         'user': request.user,
         'tag': tag_obj
     }
-    print(context['tag'].name)
+    # print(context['tag'].name)
     return render(request, template, context)
 
-
+@login_required
 def user_details(request):
     user_id = request.GET.get('id')
-    print(user_id)
+    # print(user_id)
     user_obj = ForumUser.objects.get(pk=user_id)
-    print(user_obj)
+    # print(user_obj)
     template = 'user_details.html'
     context = {
         'user': request.user,
