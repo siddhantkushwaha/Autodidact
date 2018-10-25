@@ -11,7 +11,7 @@ class ForumUser(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=50, unique=True)
     use_count = models.IntegerField(default=0)
     creation_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(ForumUser, on_delete=models.SET_NULL, null=True)
