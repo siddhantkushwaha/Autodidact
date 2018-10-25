@@ -263,7 +263,7 @@ def add_post(request):
 
 @login_required
 def update_tag(request):
-    if (request.POST):
+    if request.POST:
         new_tag = request.POST.get('tag')
         old_tag = request.POST.get('oldtag')
         print(new_tag)

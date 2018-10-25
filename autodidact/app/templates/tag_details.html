@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h1>
-                        <i class="fas fa-tags"></i>   Tags</h1>
+                        <i class="fas fa-tags"></i> Tags</h1>
                 </div>
             </div>
         </div>
@@ -37,23 +37,32 @@
                 <div class="col">
                     <div class="card">
                         <div class="card text-center">
-                              <div class="card-header">
-                                  <h3 class="card-title" style="margin-top: 10px"> &nbsp;Tag : {{ tag.name }}</h3>
-                              </div>
-                              <div class="card-body">
-                                  <h5 class="card-text" style="margin-left: 40px"> Created by &nbsp;<i class="fas fa-user-tag"></i> <span style="margin-left: 30px">{{ tag.created_by.django_user.username }}</span></h5>
-                                  <h5 class="card-text" style="margin-right: 130px;margin-top: 15px"> Use Count &nbsp; <i class="fas fa-sort-numeric-up"></i> <span style="margin-left: 40px"> {{ tag.use_count }} </span> </h5>
-                                <a href="#" class="btn btn-success btn-group inline" style="margin-top: 20px">See Profile</a>
-                                  <a href="#" class="btn-group inline" data-toggle="modal" data-target="#updateTagModal" style="margin-top: 20px">
+                            <div class="card-header">
+                                <h3 class="card-title" style="margin-top: 10px"> &nbsp;Tag : {{ tag.name }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-text" style="margin-left: 40px"> Created by &nbsp;<i
+                                        class="fas fa-user-tag"></i> <span
+                                        style="margin-left: 30px">{{ tag.created_by.django_user.username }}</span></h5>
+                                <h5 class="card-text" style="margin-right: 130px;margin-top: 15px"> Use Count &nbsp; <i
+                                        class="fas fa-sort-numeric-up"></i> <span
+                                        style="margin-left: 40px"> {{ tag.use_count }} </span></h5>
+                                <a href="#" class="btn btn-success btn-group inline" style="margin-top: 20px">See
+                                    Profile</a>
+                                {% if user == tag.created_by.django_user %}
+                                    <a href="#" class="btn-group inline" data-toggle="modal"
+                                       data-target="#updateTagModal" style="margin-top: 20px">
                                         <button type="button" class="btn btn-outline-dark"
                                                 style="height: 2.5rem;">
                                             Update Tag
                                         </button>
-                                  </a>
-                              </div>
-                              <div class="card-footer text-muted">
+                                    </a>
+                                {% endif %}
+
+                            </div>
+                            <div class="card-footer text-muted">
                                 Creation Time {{ tag.creation_time }}
-                              </div>
+                            </div>
                         </div>
                     </div>
                 </div>
