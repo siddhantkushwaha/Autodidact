@@ -42,8 +42,14 @@
                               </div>
                               <div class="card-body">
                                   <h5 class="card-text" style="margin-left: 40px"> Created by &nbsp;<i class="fas fa-user-tag"></i> <span style="margin-left: 30px">{{ tag.created_by.django_user.username }}</span></h5>
-                                  <h5 class="card-text" style="margin-right: 130px;margin-top: 15px"> Use Count &nbsp; <i class="fas fa-sort-numeric-up"></i> <span style="margin-left: 40px"> {{ tag.post_set.all|length }} </span> </h5>
-                                <a href="#" class="btn btn-success" style="margin-top: 20px">See Profile</a>
+                                  <h5 class="card-text" style="margin-right: 130px;margin-top: 15px"> Use Count &nbsp; <i class="fas fa-sort-numeric-up"></i> <span style="margin-left: 40px"> {{ tag.use_count }} </span> </h5>
+                                <a href="#" class="btn btn-success btn-group inline" style="margin-top: 20px">See Profile</a>
+                                  <a href="#" class="btn-group inline" data-toggle="modal" data-target="#updateTagModal" style="margin-top: 20px">
+                                        <button type="button" class="btn btn-outline-dark"
+                                                style="height: 2.5rem;">
+                                            Update Tag
+                                        </button>
+                                  </a>
                               </div>
                               <div class="card-footer text-muted">
                                 Creation Time {{ tag.creation_time }}
@@ -58,24 +64,36 @@
 {% endblock %}
 
 {% block below_footer_content %}
+    <!-- MODALS -->
+
+    <!-- ADD CATEGORY MODAL -->
+    <div class="modal fade" id="updateTagModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Update Tag</h5>
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'app:updateTag' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="title">Rename Tag As:</label>
+                            <input type="text" class="form-control" name="tag">
+                        </div>
+
+                        <input hidden name="oldtag" value="{{ tag.name }}">
+
+                        <input type="submit" class="btn btn-success" value="Rename">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block below_body_content %}
 {% endblock %}
 
-{#<div class="card" style="width: 18rem;">#}
-{#  <img class="card-img-top" src="..." alt="Card image cap">#}
-{#  <div class="card-body">#}
-{#    <h5 class="card-title">Card title</h5>#}
-{#    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>#}
-{#  </div>#}
-{#  <ul class="list-group list-group-flush">#}
-{#    <li class="list-group-item">Cras justo odio</li>#}
-{#    <li class="list-group-item">Dapibus ac facilisis in</li>#}
-{#    <li class="list-group-item">Vestibulum at eros</li>#}
-{#  </ul>#}
-{#  <div class="card-body">#}
-{#    <a href="#" class="card-link">Card link</a>#}
-{#    <a href="#" class="card-link">Another link</a>#}
-{#  </div>#}
-{#</div>#}

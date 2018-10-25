@@ -259,3 +259,19 @@ def add_post(request):
             'user': request.user,
         }
         return render(request, template, context)
+
+@login_required
+def update_tag(request):
+    if(request.POST):
+        new_tag = request.POST.get('tag')
+        old_tag = request.POST.get('oldtag')
+        print(new_tag)
+        print(old_tag)
+        cursor = connection.cursor()
+        query = 'call update_tag("%s", "%s")' % (new_tag, old_tag)
+        cursor.execute(query)
+
+        return HttpResponseRedirect(reverse('app:tags'))
+    else:
+        return HttpResponse('This is a get request.')
+
