@@ -133,7 +133,7 @@ def get_tags(request):
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
-    tags = Tag.objects.order_by('use_count').order_by('id')
+    tags = Tag.objects.order_by('id').order_by('-use_count')
 
     query = request.GET.get('query')
     if query is not None:
@@ -242,6 +242,7 @@ def add_post(request):
         post = Post()
         post.title = title
         post.description = description
+        post.created_by = ForumUser.objects.get(django_user=request.user)
         post.save()
 
         tags = serializers.deserialize('json', tags)

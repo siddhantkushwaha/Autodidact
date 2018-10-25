@@ -60,7 +60,7 @@
                                 <tr>
                                     <td>{{ forloop.counter0|add:items.start_index }}</td>
                                     <td>{{ tag.name }}</td>
-                                    <td>{{ tag.use_count }}</td>
+                                    <td>{{ tag.post_set.all|length }}</td>
                                     <td>
                                         <a href="{% url 'app:tagDetails' %}?id={{ tag.id }}" class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details

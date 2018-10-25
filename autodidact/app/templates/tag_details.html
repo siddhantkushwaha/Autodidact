@@ -42,7 +42,7 @@
                               </div>
                               <div class="card-body">
                                   <h5 class="card-text" style="margin-left: 40px"> Created by &nbsp;<i class="fas fa-user-tag"></i> <span style="margin-left: 30px">{{ tag.created_by.django_user.username }}</span></h5>
-                                  <h5 class="card-text" style="margin-right: 130px;margin-top: 15px"> Use Count &nbsp; <i class="fas fa-sort-numeric-up"></i> <span style="margin-left: 40px"> {{ tag.use_count }} </span> </h5>
+                                  <h5 class="card-text" style="margin-right: 130px;margin-top: 15px"> Use Count &nbsp; <i class="fas fa-sort-numeric-up"></i> <span style="margin-left: 40px"> {{ tag.post_set.all|length }} </span> </h5>
                                 <a href="#" class="btn btn-success" style="margin-top: 20px">See Profile</a>
                               </div>
                               <div class="card-footer text-muted">

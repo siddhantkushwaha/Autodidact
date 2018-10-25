@@ -5,6 +5,14 @@
         .table {
             margin-bottom: 0px;
         }
+
+        .text {
+            display: block;
+            width: 200px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
     </style>
 {% endblock %}
 
@@ -70,11 +78,12 @@
                             {% for post in posts %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ post.title }}</td>
+                                    <td class="text">{{ post.title }}</td>
                                     <td>{{ post.view_count }}</td>
                                     <td>{{ post.creation_time }}</td>
                                     <td>
-                                        <a href="{% url 'app:postDetails' %}?id={{ post.id }}" class="btn btn-secondary">
+                                        <a href="{% url 'app:postDetails' %}?id={{ post.id }}"
+                                           class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>
                                     </td>
@@ -107,9 +116,9 @@
                             {% for tag in tags %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ tag.name }}</td>
+                                    <td class="text">{{ tag.name }}</td>
                                     <td>{{ tag.creation_time }}</td>
-                                    <td>{{ tag.use_count }}</td>
+                                    <td>{{ tag.post_set.all|length }}</td>
                                     <td>
                                         <a href="{% url 'app:tagDetails' %}?id={{ tag.id }}" class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
