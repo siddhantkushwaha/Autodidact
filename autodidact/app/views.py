@@ -260,9 +260,10 @@ def add_post(request):
         }
         return render(request, template, context)
 
+
 @login_required
 def update_tag(request):
-    if(request.POST):
+    if (request.POST):
         new_tag = request.POST.get('tag')
         old_tag = request.POST.get('oldtag')
         print(new_tag)
@@ -275,3 +276,16 @@ def update_tag(request):
     else:
         return HttpResponse('This is a get request.')
 
+
+@login_required
+def add_answer(request):
+    if request.POST:
+        post_id = int(request.POST.get('post_id'))
+        description = request.POST.get('description')
+
+        answer = Answer()
+        answer.post_id = post_id
+        answer.description = description
+        answer.created_by = ForumUser.objects.get(django_user=request.user)
+        answer.save()
+        return JsonResponse({'res': 'success'})

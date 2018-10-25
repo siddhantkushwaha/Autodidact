@@ -98,41 +98,42 @@
     <section id="answers">
         <div class="container mt-3">
 
-            <!-- 1 answer -->
-            <div class="row">
-                <div class="col">
-                    <div class="card mb-3">
-                        <div class="border card-body" style="padding: 0;">
-                            <textarea class="answers form-control"></textarea>
-                        </div>
-                        <div class="card-footer d-inline">
-                            <div class="row">
-                                <div class="col-xs-12 col-lg-3 d-inline my-3 class1">
-                                    <a href="#" class="nodecoration mx-2">
-                                        <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
-                                    </a>
-                                    <span class="h3">0</span>
-                                    <a href="#" class="nodecoration mx-2">
-                                        <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
-                                           style="font-size:36px;color:gray;"></i>
-                                    </a>
-                                </div>
+            {% for answer in post.answer_set.all %}
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-3">
+                            <div class="border card-body" style="padding: 0;">
+                                <textarea class="answers form-control">{{ answer.description }}</textarea>
+                            </div>
+                            <div class="card-footer d-inline">
+                                <div class="row">
+                                    <div class="col-xs-12 col-lg-3 d-inline my-3 class1">
+                                        <a href="#" class="nodecoration mx-2">
+                                            <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
+                                        </a>
+                                        <span class="h3">0</span>
+                                        <a href="#" class="nodecoration mx-2">
+                                            <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
+                                               style="font-size:36px;color:gray;"></i>
+                                        </a>
+                                    </div>
 
-                                <div class="col-xs-12 col-lg-6 d-inline my-3 class1">
-                                    <a href="#" data-toggle="modal" data-target="#postCommentModal">
-                                        <button type="button" class="btn btn-outline-dark"
-                                                style="height: 2.5rem;">
-                                            Post a Comment
-                                        </button>
-                                    </a>
-                                </div>
+                                    <div class="col-xs-12 col-lg-6 d-inline my-3 class1">
+                                        <a href="#" data-toggle="modal" data-target="#postCommentModal">
+                                            <button type="button" class="btn btn-outline-dark"
+                                                    style="height: 2.5rem;">
+                                                Post a Comment
+                                            </button>
+                                        </a>
+                                    </div>
 
-                                <div class="col-xs-12 col-lg-3 d-inline my-3 class1">
-                                    <div class="card p-0 mr-0" style="width: 15rem;">
-                                        <div class="card-body">
-                                            <h6 class="card-title my-0">asked by</h6>
-                                            <a href="#" class="card-link my-0"></a>
-                                            <h6 class="card-title my-0"></h6>
+                                    <div class="col-xs-12 col-lg-3 d-inline my-3 class1">
+                                        <div class="card p-0 mr-0" style="width: 15rem;">
+                                            <div class="card-body">
+                                                <h6 class="card-title my-0">answered by</h6>
+                                                <a href="#" class="card-link my-0">{{ answer.created_by }}</a>
+                                                <h6 class="card-title my-0">{{ answer.creation_time }}</h6>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +141,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            {% empty %}
+                <p>empty</p>
+            {% endfor %}
 
         </div>
     </section>
@@ -158,9 +161,9 @@
                             <textarea id="answer" class="form-control"></textarea>
                         </div>
                         <div class="card-footer">
-                            <a href="index.html" class="btn btn-success float-right">
+                            <button onclick="submitAnswer()" class="btn btn-success float-right">
                                 <i class="fas fa-check"></i> Post Answer
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -188,12 +191,12 @@
     <script src="https://use.fontawesome.com/fca87e3227.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/11.1.1/classic/ckeditor.js"></script>
     <script>
-        let editor;
+        let postEditor;
         ClassicEditor
             .create(document.querySelector('#description'))
             .then(newEditor => {
-                editor = newEditor;
-                editor.isReadOnly = true;
+                postEditor = newEditor;
+                postEditor.isReadOnly = true;
             })
             .catch(error => {
                 console.error(error);
@@ -213,10 +216,48 @@
         }
     </script>
     <script>
+        let answerEditor;
         ClassicEditor
             .create(document.querySelector('#answer'))
+            .then(newEditor => {
+                answerEditor = newEditor;
+            })
             .catch(error => {
                 console.error(error);
             });
+    </script>
+    <script>
+        function submitAnswer() {
+
+            let description = answerEditor.getData({trim: true});
+
+            console.log(description);
+
+            if (description.length === 0) {
+                console.log('Description can\'t be empty');
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'app:addAnswer' %}',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'post_id': {{ post.id }},
+                    'description': description
+                },
+
+                success: function (res) {
+                    console.log('Add Answer Successful.');
+                    console.log(res);
+                    window.location.href = "{% url 'app:postDetails' %}?id={{ post.id }}"
+                },
+                error: function (res) {
+                    console.log('Add Answer Failed.');
+                    console.log(res);
+                },
+            });
+        }
     </script>
 {% endblock %}
