@@ -44,41 +44,31 @@
         </div>
     </header>
 
-    <!-- SEARCH -->
-    <section id="search" class="py-4 mb-4 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 ml-auto">
-
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- CATEGORIES -->
-    <section id="categories">
+    <section id="categories" style="margin-top: 50px">
         <div class="container wrap">
-    <div class="row">
-        <div class="col-lg-8 col-md-6 offset-md-2">
-            <div class="well well-sm">
-                <div class="row">
-                    <div class="col-sm-3 col-md-7 col-lg-7">
-                        <img src="{% static 'app/img/avatar.png' %}" alt="" class="img-rounded img-fluid" />
-                    </div>
-                    <div class="col-sm-8 col-md-6 col-lg-5">
-                        <h4 style=" margin-top:30px ;">{{ user_obj.django_user.username }}</h4>
-                        <p> <i class="fas fa-at"></i>  &nbsp;&nbsp; Email <br> {{ user_obj.django_user.username }} </p>
-                        <p> <i class="fas fa-calendar-alt"></i>  &nbsp;&nbsp; Date Joined <br>{{ user_obj.django_user.date_joined }}  </p>
-                        <div class="col-md-8 col-md-8 col-lg-5">
-                        <small><cite title="San Diego, USA">Last Login {{ user_obj.django_user.last_login }}</cite></small>
+            <div class="row">
+                <div class="col-lg-8 col-md-6 offset-md-2">
+                    <div class="well well-sm">
+                        <div class="row">
+                            <div class="col-sm-3 col-md-7 col-lg-7">
+                                <img src="{% static 'app/img/avatar.png' %}" alt="" class="img-rounded img-fluid" />
+                            </div>
+                            <div class="col-sm-8 col-md-6 col-lg-5">
+                                <h4 style=" margin-top:30px ;">{{ user_obj.django_user.username }}</h4>
+                                <p> <i class="fas fa-at"></i>  &nbsp;&nbsp; Email <br> {{ user_obj.django_user.username }} </p>
+                                <p> <i class="fas fa-calendar-alt"></i>  &nbsp;&nbsp; Date Joined <br>{{ user_obj.django_user.date_joined }}  </p>
+                                <p> <i class="fas fa-user-graduate"></i>  &nbsp;&nbsp;Reputation <br>{{ user_obj.reputation }}  </p>
+                                <small style="margin-top: 100px;margin-left: 45px"><cite title="San Diego, USA">Last Login {{ user_obj.django_user.last_login }}</cite></small>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
+        <a href="{% url 'app:userProfile' %}" class="col-md-2 offset-lg-5 btn btn-secondary ">
+            <i class="fas fa-user-circle"></i> Update Profile
+        </a>
     </section>
 {% endblock %}
 

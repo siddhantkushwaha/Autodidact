@@ -31,19 +31,19 @@
     </section>
 
     <!-- CATEGORIES -->
-    <section id="categories">
+    <section id="categories" style="margin-top: 100px;margin-bottom: 160px;max-width: 600px;margin-left: 450px">
         <div class="container">
             <div class="row">
                 <div class="col">
                     <div class="card">
                         <div class="card text-center">
                               <div class="card-header">
-                                  <h5 class="card-title">Name of Tag {{ tag.name }}</h5>
+                                  <h3 class="card-title" style="margin-top: 10px"> &nbsp;Tag : {{ tag.name }}</h3>
                               </div>
                               <div class="card-body">
-                                  <h6 class="card-text">Created by {{ tag.created_by.django_user.username }}  <i class="fas fa-user-secret"> </i> </h6>
-                                  <h6 class="card-text">Use Count {{ tag.use_count }}   <i class="fas fa-at"></i> </h6>
-                                <a href="#" class="btn btn-success">See Profile</a>
+                                  <h5 class="card-text" style="margin-left: 40px"> Created by &nbsp;<i class="fas fa-user-tag"></i> <span style="margin-left: 30px">{{ tag.created_by.django_user.username }}</span></h5>
+                                  <h5 class="card-text" style="margin-right: 130px;margin-top: 15px"> Use Count &nbsp; <i class="fas fa-sort-numeric-up"></i> <span style="margin-left: 40px"> {{ tag.use_count }} </span> </h5>
+                                <a href="#" class="btn btn-success" style="margin-top: 20px">See Profile</a>
                               </div>
                               <div class="card-footer text-muted">
                                 Creation Time {{ tag.creation_time }}
@@ -54,6 +54,7 @@
             </div>
         </div>
     </section>
+
 {% endblock %}
 
 {% block below_footer_content %}
