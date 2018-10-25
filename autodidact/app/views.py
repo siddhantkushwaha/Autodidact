@@ -259,3 +259,17 @@ def add_post(request):
             'user': request.user,
         }
         return render(request, template, context)
+
+
+@login_required
+def add_answer(request):
+    if request.POST:
+        post_id = int(request.POST.get('post_id'))
+        description = request.POST.get('description')
+
+        answer = Answer()
+        answer.post_id = post_id
+        answer.description = description
+        answer.created_by = ForumUser.objects.get(django_user=request.user)
+        answer.save()
+        return JsonResponse({'res': 'success'})

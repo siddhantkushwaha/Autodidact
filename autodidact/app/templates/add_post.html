@@ -71,7 +71,7 @@
                                 <div id="tag_suggestions"></div>
                             </form>
 
-                            <button onclick="submitForm()" style="float: right;" class="btn btn-success"><i
+                            <button onclick="submitPost()" style="float: right;" class="btn btn-success"><i
                                     class="fas fa-check"></i> Post Question
                             </button>
                         </div>
@@ -100,7 +100,7 @@
     </script>
     <script src="{% static 'app/js/search_tag.js' %}"></script>
     <script>
-        function submitForm() {
+        function submitPost() {
 
             let title = document.getElementById('title').value;
             let description = editor.getData({trim: true});

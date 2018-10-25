@@ -19,6 +19,7 @@ urlpatterns = [
 
     url(r'^add/tag$', views.add_tag, name='addTag'),
     url(r'^add/post$', views.add_post, name='addPost'),
+    url(r'^add/answer$', views.add_answer, name='addAnswer'),
 
     url(r'^search/tags$', views.search_tags, name='searchTags'),
     # url(r'^search/users$', views.search_users, name='searchUsers'),
