@@ -233,6 +233,22 @@ def add_tag(request):
 
 
 @login_required
+def update_tag(request):
+    if request.POST:
+        new_tag = request.POST.get('tag')
+        old_tag = request.POST.get('oldtag')
+        print(new_tag)
+        print(old_tag)
+        cursor = connection.cursor()
+        query = 'call update_tag("%s", "%s")' % (new_tag, old_tag)
+        cursor.execute(query)
+
+        return HttpResponseRedirect(reverse('app:tags'))
+    else:
+        return HttpResponse('This is a get request.')
+
+
+@login_required
 def add_post(request):
     if request.POST:
         title = request.POST.get('title')
@@ -262,22 +278,6 @@ def add_post(request):
 
 
 @login_required
-def update_tag(request):
-    if request.POST:
-        new_tag = request.POST.get('tag')
-        old_tag = request.POST.get('oldtag')
-        print(new_tag)
-        print(old_tag)
-        cursor = connection.cursor()
-        query = 'call update_tag("%s", "%s")' % (new_tag, old_tag)
-        cursor.execute(query)
-
-        return HttpResponseRedirect(reverse('app:tags'))
-    else:
-        return HttpResponse('This is a get request.')
-
-
-@login_required
 def add_answer(request):
     if request.POST:
         post_id = int(request.POST.get('post_id'))
@@ -288,4 +288,21 @@ def add_answer(request):
         answer.description = description
         answer.created_by = ForumUser.objects.get(django_user=request.user)
         answer.save()
+        return JsonResponse({'res': 'success'})
+
+
+@login_required
+def add_comment(request):
+    if request.POST:
+        post_id = int(request.POST.get('post_id'))
+        answer_id = int(request.POST.get('answer_id'))
+        description = request.POST.get('description')
+
+        comment = Comment()
+        comment.post_id = post_id
+        if answer_id is not None:
+            comment.answer_id = answer_id
+        comment.description = description
+        comment.created_by = ForumUser.objects.get(django_user=request.user)
+        comment.save()
         return JsonResponse({'res': 'success'})

@@ -24,7 +24,6 @@ urlpatterns = [
     url(r'^update/tag$', views.update_tag, name='updateTag'),
 
     url(r'^search/tags$', views.search_tags, name='searchTags'),
-    # url(r'^search/users$', views.search_users, name='searchUsers'),
 
     url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]
