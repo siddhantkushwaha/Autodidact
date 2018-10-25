@@ -2,11 +2,11 @@
     <ul class="pagination">
 
         <li class="page-item {% if not items.has_previous %}disabled{% endif %}">
-            <a href="?page=1" class="page-link">First</a>
+            <a href="{% if query %}?query={{ query }}&{% else %}?{% endif %}page=1" class="page-link">First</a>
         </li>
 
         <li class="page-item {% if not items.has_previous %}disabled{% endif %}">
-            <a href="?page={% if items.has_previous %}{{ items.previous_page_number }}{% endif %}" class="page-link">Previous</a>
+            <a href="{% if query %}?query={{ query }}&{% else %}?{% endif %}page={% if items.has_previous %}{{ items.previous_page_number }}{% endif %}" class="page-link">Previous</a>
         </li>
 
         <li class="page-item active">
@@ -14,11 +14,11 @@
         </li>
 
         <li class="page-item {% if not items.has_next %}disabled{% endif %}">
-            <a href="?page={% if items.has_next %}{{ items.next_page_number }}{% endif %}" class="page-link">Next</a>
+            <a href="{% if query %}?query={{ query }}&{% else %}?{% endif %}page={% if items.has_next %}{{ items.next_page_number }}{% endif %}" class="page-link">Next</a>
         </li>
 
         <li class="page-item {% if not items.has_next %}disabled{% endif %}">
-            <a href="?page={{ items.paginator.num_pages }}" class="page-link">Last</a>
+            <a href="{% if query %}?query={{ query }}&{% else %}?{% endif %}page={{ items.paginator.num_pages }}" class="page-link">Last</a>
         </li>
 
     </ul>

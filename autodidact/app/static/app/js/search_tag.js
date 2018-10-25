@@ -6,7 +6,6 @@ function search_tags(value, url) {
     const suggestion_div = document.getElementById('tag_suggestions');
     if (value.length === 0) {
         clear_node(suggestion_div);
-        suggestion_div.style.display = 'none';
         return;
     }
 
@@ -22,8 +21,6 @@ function search_tags(value, url) {
         success: function (res) {
             console.log('Search Successful for ' + value);
 
-            suggestion_div.style.display = 'block';
-
             const curr_val = document.getElementById('tags').value;
             if (value !== curr_val)
                 return;
@@ -35,6 +32,8 @@ function search_tags(value, url) {
             console.log('Showing results for ' + value);
             console.log('Current val is ' + curr_val + ' ' + suggested_tags.length);
 
+            if (suggested_tags.length > 0)
+                suggestion_div.style.display = 'block';
 
             for (let i in suggested_tags) {
 
@@ -110,4 +109,5 @@ function clear_node(node) {
     while (node.hasChildNodes()) {
         node.removeChild(node.lastChild);
     }
+    node.style.display = 'none';
 }

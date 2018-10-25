@@ -1,12 +1,12 @@
 import json
 
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.core.paginator import Paginator
-from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.core import serializers
 from django.shortcuts import render
+from django.db import connection
 from django.urls import reverse
 
 from app.forms import LoginForm
@@ -122,6 +122,7 @@ def get_posts(request):
 
     context = {
         'user': request.user,
+        'query': query,
         'items': paginator.page(page),
     }
     return render(request, template, context)
@@ -142,6 +143,7 @@ def get_tags(request):
 
     context = {
         'user': request.user,
+        'query': query,
         'items': paginator.page(page),
     }
     return render(request, template, context)
@@ -175,47 +177,37 @@ def get_users(request):
 
     context = {
         'user': request.user,
+        'query': query,
         'items': paginator.page(page),
     }
     return render(request, template, context)
 
 
-# Authentication isn't necessary for viewing the details page
 def post_details(request):
     post_id = request.GET.get('id')
-    # print(post_id)
     post_obj = Post.objects.get(pk=post_id)
-    # print(post_obj)
     template = 'post_details.html'
-    print(post_obj.tags.all())
     context = {
         'user': request.user,
         'post': post_obj
     }
-    # print(context['post'].title)
     return render(request, template, context)
 
 
-# Authentication isn't necessary for viewing the details page
 def tag_details(request):
     tag_id = request.GET.get('id')
     tag_obj = Tag.objects.get(pk=tag_id)
-    # print(tag_obj)
     template = 'tag_details.html'
     context = {
         'user': request.user,
         'tag': tag_obj
     }
-    # print(context['tag'].name)
     return render(request, template, context)
 
 
-# Authentication isn't necessary for viewing the details page
 def user_details(request):
     user_id = request.GET.get('id')
-    # print(user_id)
     user_obj = ForumUser.objects.get(pk=user_id)
-    # print(user_obj)
     template = 'user_details.html'
     context = {
         'user': request.user,
@@ -244,18 +236,22 @@ def add_tag(request):
 def add_post(request):
     if request.POST:
         title = request.POST.get('title')
-        description = request.POST.get('editor1')
+        tags = request.POST.get('tags')
+        description = request.POST.get('description')
 
         post = Post()
         post.title = title
         post.description = description
         post.save()
 
-        # tag = Tag.objects.get(id=9)
-        # post.tags.add(tag)
+        tags = serializers.deserialize('json', tags)
+        for i in tags:
+            i.save()
+            post.tags.add(i.object)
+
         post.save()
 
-        return HttpResponseRedirect(reverse('app:main'))
+        return JsonResponse({'res': 'success'})
     else:
         template = 'add_post.html'
         context = {

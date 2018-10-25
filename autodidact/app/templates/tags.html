@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h1>
-                        <i class="fas fa-tags"></i>  Tags</h1>
+                        <i class="fas fa-tags"></i> Tags</h1>
                 </div>
             </div>
         </div>
@@ -26,8 +26,9 @@
                 <div class="col-md-6 ml-auto">
                     <div class="input-group">
                         <form action="" method="GET" class="input-group-append input-group">
-                            <input type="text" class="form-control " placeholder="Search Tags..." name="query" >
-                            <button class="btn btn-success" type="submit"> Search </button>
+                            <input type="text" class="form-control " placeholder="Search tags" name="query"
+                                   {% if query %} value="{{ query }}" {% endif %}>
+                            <button class="btn btn-success" type="submit"> Search</button>
                         </form>
                     </div>
                 </div>
@@ -57,7 +58,7 @@
 
                             {% for tag in items %}
                                 <tr>
-                                    <td>{{ forloop.counter0|add:items.start_index}}</td>
+                                    <td>{{ forloop.counter0|add:items.start_index }}</td>
                                     <td>{{ tag.name }}</td>
                                     <td>{{ tag.use_count }}</td>
                                     <td>
@@ -87,5 +88,5 @@
 {% block below_footer_content %}
 {% endblock %}
 
-{% block script_content %}
+{% block below_body_content %}
 {% endblock %}
