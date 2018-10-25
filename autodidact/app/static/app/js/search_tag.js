@@ -1,7 +1,7 @@
 let suggested_tags = [];
 let applied_tags = [];
 
-function search_tags(value, url) {
+function search_tags(value, url, csrf_token) {
 
     const suggestion_div = document.getElementById('tag_suggestions');
     if (value.length === 0) {
@@ -10,10 +10,11 @@ function search_tags(value, url) {
     }
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: url,
         dataType: 'json',
         data: {
+            'csrfmiddlewaretoken': csrf_token,
             'query': value,
             'limit': 6
         },

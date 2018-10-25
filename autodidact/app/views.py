@@ -150,8 +150,8 @@ def get_tags(request):
 
 
 def search_tags(request):
-    query = request.GET.get('query')
-    limit = int(request.GET.get('limit', default=-1))
+    query = request.POST.get('query')
+    limit = int(request.POST.get('limit', default=-1))
 
     tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
     if limit != -1:

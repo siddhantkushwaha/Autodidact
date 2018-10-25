@@ -4,6 +4,7 @@ from django.contrib.auth.views import logout
 from app import views
 
 app_name = 'app'
+
 urlpatterns = [
     url(r'^$', views.main, name='main'),
     url(r'^login$', views.login_user, name='login'),

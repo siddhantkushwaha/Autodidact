@@ -63,7 +63,7 @@
                                 <div class="form-group">
                                     <label for="tags">Tags</label>
                                     <input id="tags" type="text" class="form-control" placeholder="android"
-                                           onkeyup="search_tags(value, '{% url 'app:searchTags' %}')">
+                                           onkeyup="search_tags(value, '{% url 'app:searchTags' %}', '{{ csrf_token }}')">
                                 </div>
 
                                 <div id="tag_applied"></div>
