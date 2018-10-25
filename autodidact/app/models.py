@@ -3,8 +3,8 @@ from django.db import models
 
 
 class ForumUser(models.Model):
-    django_user = models.OneToOneField(User, null=False)
-    reputation = models.IntegerField(null=False, default=0)
+    django_user = models.OneToOneField(User)
+    reputation = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.django_user.username)
@@ -21,7 +21,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=100, null=False)
+    title = models.CharField(max_length=100)
     description = models.CharField(max_length=500, null=True)
     tags = models.ManyToManyField(Tag)
     view_count = models.IntegerField(default=0)
@@ -35,7 +35,8 @@ class Post(models.Model):
 
 
 class Answer(models.Model):
-    description = models.IntegerField()
+    description = models.CharField(max_length=100)
+    post = models.ForeignKey(Post)
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
     creation_time = models.DateTimeField(auto_now_add=True)
@@ -47,6 +48,8 @@ class Answer(models.Model):
 
 class Comment(models.Model):
     description = models.CharField(max_length=100)
+    post = models.ForeignKey(Post)
+    answer = models.ForeignKey(Answer, null=True)
     creation_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(ForumUser, on_delete=models.SET_NULL, null=True)
 
