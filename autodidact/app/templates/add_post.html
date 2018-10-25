@@ -62,7 +62,7 @@
 
                                 <div class="form-group">
                                     <label for="tags">Tags</label>
-                                    <input id="tags" type="text" class="form-control" placeholder="Tags"
+                                    <input id="tags" type="text" class="form-control" placeholder="android"
                                            onkeyup="search_tags(value, '{% url 'app:searchTags' %}')">
                                 </div>
 
@@ -85,7 +85,7 @@
 {% block below_footer_content %}
 {% endblock %}
 
-{% block script_content %}
+{% block below_body_content %}
     <script src="https://cdn.ckeditor.com/ckeditor5/11.1.1/classic/ckeditor.js"></script>
     <script>
         let editor;
