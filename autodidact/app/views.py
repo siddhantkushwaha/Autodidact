@@ -122,6 +122,7 @@ def get_posts(request):
 
     context = {
         'user': request.user,
+        'query': query,
         'items': paginator.page(page),
     }
     return render(request, template, context)
@@ -142,6 +143,7 @@ def get_tags(request):
 
     context = {
         'user': request.user,
+        'query': query,
         'items': paginator.page(page),
     }
     return render(request, template, context)
@@ -175,6 +177,7 @@ def get_users(request):
 
     context = {
         'user': request.user,
+        'query': query,
         'items': paginator.page(page),
     }
     return render(request, template, context)

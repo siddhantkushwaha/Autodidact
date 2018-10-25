@@ -26,8 +26,9 @@
                 <div class="col-md-6 ml-auto">
                     <div class="input-group">
                         <form action="" method="GET" class="input-group-append input-group">
-                            <input type="text" class="form-control " placeholder="Search Posts..." name="query" >
-                            <button class="btn btn-primary" type="submit"> Search </button>
+                            <input type="text" class="form-control " placeholder="Search posts" name="query"
+                                    {% if query %} value="{{ query }}" {% endif %}>
+                            <button class="btn btn-primary" type="submit"> Search</button>
                         </form>
                     </div>
                 </div>
@@ -62,7 +63,8 @@
                                     <td>{{ post.view_count }}</td>
                                     <td>{{ post.creation_time }}</td>
                                     <td>
-                                        <a href="{% url 'app:postDetails' %}?id={{ post.id }}" class="btn btn-secondary">
+                                        <a href="{% url 'app:postDetails' %}?id={{ post.id }}"
+                                           class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>
                                     </td>

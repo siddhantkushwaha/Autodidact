@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <h1>
-                        <i class="fas fa-users"></i>    Users</h1>
+                        <i class="fas fa-users"></i> Users</h1>
                 </div>
             </div>
         </div>
@@ -26,8 +26,9 @@
                 <div class="col-md-6 ml-auto">
                     <div class="input-group">
                         <form action="" method="GET" class="input-group-append input-group">
-                            <input type="text" class="form-control " placeholder="Search Users..." name="query" >
-                            <button class="btn btn-warning" type="submit"> Search </button>
+                            <input type="text" class="form-control " placeholder="Search users" name="query"
+                                    {% if query %} value="{{ query }}" {% endif %}>
+                            <button class="btn btn-warning" type="submit"> Search</button>
                         </form>
                     </div>
                 </div>
@@ -58,12 +59,13 @@
 
                             {% for user in items %}
                                 <tr>
-                                    <td>{{ forloop.counter0|add:items.start_index}}</td>
+                                    <td>{{ forloop.counter0|add:items.start_index }}</td>
                                     <td>{{ user.django_user.username }}</td>
                                     <td>{{ user.django_user.date_joined }}</td>
                                     <td>{{ user.reputation }}</td>
                                     <td>
-                                        <a href="{% url 'app:userDetails' %}?id={{ user.id }}" class="btn btn-secondary">
+                                        <a href="{% url 'app:userDetails' %}?id={{ user.id }}"
+                                           class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>
                                     </td>
