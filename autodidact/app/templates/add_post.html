@@ -42,17 +42,14 @@
                             <h4>Fill Question Details</h4>
                         </div>
                         <div class="card-body">
-                            <form method="post" action="{% url 'app:addPost' %}">
-
-                                {% csrf_token %}
-
+                            <form>
                                 <div class="form-group">
                                     <label for="title">Title</label>
-                                    <input name="title" type="text" class="form-control" placeholder="My Question">
+                                    <input id="title" type="text" class="form-control" placeholder="My Question">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="category">Tags</label>
+                                    <label for="tags">Tags</label>
                                     <input id="tags" type="text" class="form-control" placeholder="Tags"
                                            onkeyup="search_tags(value, '{% url 'app:searchTags' %}')">
                                 </div>
@@ -72,15 +69,13 @@
 
                                 <div class="form-group">
                                     <label for="body">Description</label>
-                                    <textarea name="editor1"
+                                    <textarea id="description"
                                               class="form-control">Describe your problem in detail.</textarea>
                                 </div>
-
-                                <button type="submit" style="float: right;" class="btn btn-success"><i
-                                        class="fas fa-check"></i> Post Question
-                                </button>
-
                             </form>
+                            <button onclick="submitForm()" style="float: right;" class="btn btn-success"><i
+                                    class="fas fa-check"></i> Post Question
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -95,12 +90,52 @@
 {% block script_content %}
     <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('editor1');
+        CKEDITOR.replace('description');
     </script>
     <script src="{% static 'app/js/search_tag.js' %}"></script>
     <script>
-    function submitForm() {
-        
-    }
+        function submitForm() {
+
+            let title = document.getElementById('title').value;
+            let description = CKEDITOR.instances['description'].getData();
+            let tags = JSON.stringify(applied_tags);
+
+            console.log(title);
+            console.log(description);
+            console.log(tags);
+
+            if (title.length === 0) {
+                console.log('Title can\'t be empty');
+                return;
+            }
+
+            if (description.length === 0) {
+                console.log('Description can\'t be empty');
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'app:addPost' %}',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'title': title,
+                    'tags': tags,
+                    'description': description
+                },
+
+                success: function (res) {
+                    console.log('Add Post Successful.');
+                    console.log(res);
+                    window.location.href = "{% url 'app:main' %}"
+                },
+                error: function (res) {
+                    console.log('Add Post Failed.');
+                    console.log(res);
+                },
+            });
+
+        }
     </script>
 {% endblock %}

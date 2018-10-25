@@ -247,18 +247,22 @@ def add_tag(request):
 def add_post(request):
     if request.POST:
         title = request.POST.get('title')
-        description = request.POST.get('editor1')
+        tags = request.POST.get('tags')
+        description = request.POST.get('description')
 
         post = Post()
         post.title = title
         post.description = description
         post.save()
 
-        # tag = Tag.objects.get(id=9)
-        # post.tags.add(tag)
+        tags = serializers.deserialize('json', tags)
+        for i in tags:
+            i.save()
+            post.tags.add(i.object)
+
         post.save()
 
-        return HttpResponseRedirect(reverse('app:main'))
+        return JsonResponse({'res': 'success'})
     else:
         template = 'add_post.html'
         context = {

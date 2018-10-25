@@ -21,7 +21,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, null=False)
     description = models.CharField(max_length=500, null=True)
     tags = models.ManyToManyField(Tag)
     view_count = models.IntegerField(default=0)
