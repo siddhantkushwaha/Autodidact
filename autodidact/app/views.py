@@ -186,7 +186,8 @@ def post_details(request):
     # print(post_id)
     post_obj = Post.objects.get(pk=post_id)
     # print(post_obj)
-    template = 'post_details.html'
+    template = 'post_details1.html'
+    print(post_obj.tags.all())
     context = {
         'user': request.user,
         'post': post_obj
