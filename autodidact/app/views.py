@@ -292,7 +292,13 @@ def add_answer(request):
 def add_comment(request):
     if request.POST:
         post_id = int(request.POST.get('post_id', default=-1))
-        answer_id = int(request.POST.get('answer_id', default=-1))
+
+        try:
+            answer_id = int(request.POST.get('answer_id', default=-1))
+        except Exception as e:
+            print(e)
+            answer_id = -1
+
         description = request.POST.get('description')
 
         comment = Comment()

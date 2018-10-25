@@ -1,0 +1,8 @@
+<form method="post" action="#" style="margin-bottom: 0.3rem;">
+    {% csrf_token %}
+    <div class="btn-group inline" style="width: 100%; height: 48px;">
+        <input disabled class="form-control" style="border: 0;" value="{{ comment.description }}">
+        <button type="submit" style="background-color: #d7d7d7"
+                class="btn">{{ comment.created_by }}</button>
+    </div>
+</form>
