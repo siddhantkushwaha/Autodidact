@@ -64,7 +64,7 @@
                                     <td>{{ user.django_user.date_joined }}</td>
                                     <td>{{ user.reputation }}</td>
                                     <td>
-                                        <a href="{% url 'app:userDetails' %}?id={{ user.id }}"
+                                        <a href="{% url 'app:userDetails' user.id %}"
                                            class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>

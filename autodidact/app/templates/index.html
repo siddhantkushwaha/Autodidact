@@ -82,7 +82,7 @@
                                     <td>{{ post.view_count }}</td>
                                     <td>{{ post.creation_time }}</td>
                                     <td>
-                                        <a href="{% url 'app:postDetails' %}?id={{ post.id }}"
+                                        <a href="{% url 'app:postDetails' post.id %}"
                                            class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>
@@ -120,7 +120,7 @@
                                     <td>{{ tag.creation_time }}</td>
                                     <td>{{ tag.use_count }}</td>
                                     <td>
-                                        <a href="{% url 'app:tagDetails' %}?id={{ tag.id }}" class="btn btn-secondary">
+                                        <a href="{% url 'app:tagDetails' tag.id %}" class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>
                                     </td>

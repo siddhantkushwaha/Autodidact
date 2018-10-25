@@ -27,7 +27,7 @@
                     <div class="input-group">
                         <form action="" method="GET" class="input-group-append input-group">
                             <input type="text" class="form-control " placeholder="Search tags" name="query"
-                                   {% if query %} value="{{ query }}" {% endif %}>
+                                    {% if query %} value="{{ query }}" {% endif %}>
                             <button class="btn btn-success" type="submit"> Search</button>
                         </form>
                     </div>
@@ -62,7 +62,7 @@
                                     <td>{{ tag.name }}</td>
                                     <td>{{ tag.use_count }}</td>
                                     <td>
-                                        <a href="{% url 'app:tagDetails' %}?id={{ tag.id }}" class="btn btn-secondary">
+                                        <a href="{% url 'app:tagDetails' tag.id %}" class="btn btn-secondary">
                                             <i class="fas fa-angle-double-right"></i> Details
                                         </a>
                                     </td>

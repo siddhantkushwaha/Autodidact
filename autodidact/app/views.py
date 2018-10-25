@@ -183,35 +183,32 @@ def get_users(request):
     return render(request, template, context)
 
 
-def post_details(request):
-    post_id = request.GET.get('id')
-    post_obj = Post.objects.get(pk=post_id)
+def post_details(request, pk):
+    post = Post.objects.get(pk=pk)
     template = 'post_details.html'
     context = {
         'user': request.user,
-        'post': post_obj
+        'post': post
     }
     return render(request, template, context)
 
 
-def tag_details(request):
-    tag_id = request.GET.get('id')
-    tag_obj = Tag.objects.get(pk=tag_id)
+def tag_details(request, pk):
+    tag = Tag.objects.get(pk=pk)
     template = 'tag_details.html'
     context = {
         'user': request.user,
-        'tag': tag_obj
+        'tag': tag
     }
     return render(request, template, context)
 
 
-def user_details(request):
-    user_id = request.GET.get('id')
-    user_obj = ForumUser.objects.get(pk=user_id)
+def user_details(request, pk):
+    user = ForumUser.objects.get(pk=pk)
     template = 'user_details.html'
     context = {
         'user': request.user,
-        'user_obj': user_obj
+        'user_obj': user
     }
     return render(request, template, context)
 
@@ -294,15 +291,18 @@ def add_answer(request):
 @login_required
 def add_comment(request):
     if request.POST:
-        post_id = int(request.POST.get('post_id'))
-        answer_id = int(request.POST.get('answer_id'))
+        post_id = int(request.POST.get('post_id', default=-1))
+        answer_id = int(request.POST.get('answer_id', default=-1))
         description = request.POST.get('description')
 
         comment = Comment()
-        comment.post_id = post_id
-        if answer_id is not None:
+
+        if answer_id is not -1:
             comment.answer_id = answer_id
+        else:
+            comment.post_id = post_id
+
         comment.description = description
         comment.created_by = ForumUser.objects.get(django_user=request.user)
         comment.save()
-        return JsonResponse({'res': 'success'})
+        return HttpResponseRedirect(reverse('app:postDetails', kwargs={'pk': post_id}))

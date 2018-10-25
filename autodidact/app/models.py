@@ -48,7 +48,7 @@ class Answer(models.Model):
 
 class Comment(models.Model):
     description = models.CharField(max_length=100)
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(Post, null=True)
     answer = models.ForeignKey(Answer, null=True)
     creation_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(ForumUser, on_delete=models.SET_NULL, null=True)
