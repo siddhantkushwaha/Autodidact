@@ -1,12 +1,12 @@
 import json
 
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.core.paginator import Paginator
-from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.core import serializers
 from django.shortcuts import render
+from django.db import connection
 from django.urls import reverse
 
 from app.forms import LoginForm
@@ -183,42 +183,31 @@ def get_users(request):
     return render(request, template, context)
 
 
-# Authentication isn't necessary for viewing the details page
 def post_details(request):
     post_id = request.GET.get('id')
-    # print(post_id)
     post_obj = Post.objects.get(pk=post_id)
-    # print(post_obj)
     template = 'post_details.html'
-    print(post_obj.tags.all())
     context = {
         'user': request.user,
         'post': post_obj
     }
-    # print(context['post'].title)
     return render(request, template, context)
 
 
-# Authentication isn't necessary for viewing the details page
 def tag_details(request):
     tag_id = request.GET.get('id')
     tag_obj = Tag.objects.get(pk=tag_id)
-    # print(tag_obj)
     template = 'tag_details.html'
     context = {
         'user': request.user,
         'tag': tag_obj
     }
-    # print(context['tag'].name)
     return render(request, template, context)
 
 
-# Authentication isn't necessary for viewing the details page
 def user_details(request):
     user_id = request.GET.get('id')
-    # print(user_id)
     user_obj = ForumUser.objects.get(pk=user_id)
-    # print(user_obj)
     template = 'user_details.html'
     context = {
         'user': request.user,
