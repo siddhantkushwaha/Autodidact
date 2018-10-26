@@ -10,6 +10,7 @@ from django.db import connection
 from django.urls import reverse
 
 from app.forms import LoginForm
+from app.firebase import *
 from app.models import *
 
 '''This view is called when a user requests the home page of the discussion forum,the view has "index.html" as its template
