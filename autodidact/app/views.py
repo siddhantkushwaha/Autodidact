@@ -37,13 +37,15 @@ def login_user(request, token):
     logout(request)
 
     email, password = auth_api(token)
-    user = get_forum_user(email, password)
+
+    user = None
+    if email is not None:
+        user = get_forum_user(email, password)
 
     if user is not None:
         login(request, user)
-        return HttpResponseRedirect(reverse('app:main'))
-    else:
-        return HttpResponse('error login')
+
+    return HttpResponseRedirect(reverse('app:main'))
 
 
 def auth_api(token):
@@ -61,6 +63,7 @@ def auth_api(token):
 
     except Exception as e:
         print(e)
+        return None, None
 
 
 def get_forum_user(email, password):
