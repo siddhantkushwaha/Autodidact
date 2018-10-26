@@ -1,4 +1,7 @@
 import json
+import random
+import string
+import requests
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
@@ -9,7 +12,6 @@ from django.shortcuts import render
 from django.db import connection
 from django.urls import reverse
 
-from app.requests import auth_api
 from app.models import *
 
 
@@ -42,6 +44,21 @@ def login_user(request, token):
         return HttpResponseRedirect(reverse('app:main'))
     else:
         return HttpResponse('error login')
+
+
+def auth_api(token):
+    res = requests.post(url=' https://serene-wildwood-35121.herokuapp.com/oauth/getDetails', data={
+        'token': token,
+        'secret': '40e05b687fe391deef99f10aced9ebc9096cd0410190ae5ef4fc797c02df9ce0cf7455b3be59baa0810e855dce66f80f4cb81d0a2d84dfa95877d46c3c15c861'
+    })
+
+    res = json.loads(res.content)
+    email = res['student'][0]['Student_Email']
+    password = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+
+    print(email, password)
+
+    return email, password
 
 
 def get_forum_user(email, password):
