@@ -5,9 +5,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/login.css' %}">
 {% endblock %}
 
-{% block navbar_content_2 %}
-{% endblock %}
-
 {% block body_content %}
     <div class="limiter">
         <div class="container-login100">
@@ -52,4 +49,7 @@
 {% endblock %}
 
 {% block below_body_content %}
+    <script>
+        $('#main-footer').removeClass('mt-5')
+    </script>
 {% endblock %}
