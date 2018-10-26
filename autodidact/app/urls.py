@@ -8,7 +8,7 @@ app_name = 'app'
 urlpatterns = [
     url(r'^$', views.main, name='main'),
     # url(r'^login$', views.login_user, name='login'),
-    url(r'^(?P<token>[0-9]+)$', views.login_user, name='login'),
+    url(r'^(?P<token>[w, .]+)$', views.login_user, name='login'),
     url(r'^profile$', views.user_profile, name='userProfile'),
 
     url(r'^posts$', views.get_posts, name='posts'),
