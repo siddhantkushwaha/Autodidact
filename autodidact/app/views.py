@@ -13,9 +13,6 @@ from app.forms import LoginForm
 from app.firebase import *
 from app.models import *
 
-'''This view is called when a user requests the home page of the discussion forum,the view has "index.html" as its template
- and the context being passed to the view contains the latest posts and tags and count of all tags/posts/users.'''
-
 
 def main(request):
     template = 'index.html'
@@ -35,49 +32,57 @@ def main(request):
     return render(request, template, context)
 
 
-'''This view is called when a user requests to login on the discussion forum,the view has "login.html" as its template
- and the context being passed to the view contains the authenticated user and the form on unsuccessful login'''
-
-
 def login_user(request):
     logout(request)
 
     template = 'login.html'
+    error_message = None
     if request.POST:
         email = request.POST.get('email')
         password = request.POST.get('password')
-        print(email, password)
 
-        user = auth(email, password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('app:main'))
-        else:
-            return HttpResponseRedirect(reverse('app:login'))
-    else:
-        form = LoginForm()
+        res = log_in(email, password)
+        if isinstance(res, dict):
+            if is_user_email_verified(res):
+                user = get_forum_user(email, password)
+                login(request, user)
+                return HttpResponseRedirect(reverse('app:main'))
+            else:
+                error_message = 'Please verify your Email by visiting the link sent to you.'
+                send_verification_link(res)
+        elif isinstance(res, str):
+            if res == 'INVALID_EMAIL':
+                print('EMAIL ADDRESS FORMAT NOT CORRECT')
+                error_message = 'Invalid Email Address.'
+            elif res == 'INVALID_PASSWORD':
+                print('WRONG PASSWORD')
+                error_message = 'Invalid Password.'
+            elif res == 'EMAIL_NOT_FOUND':
+                print('EMAIL DOESNT EXIST')
+                res = sign_up(email, password)
+                if isinstance(res, dict):
+                    if is_user_email_verified(res):
+                        user = get_forum_user(email, password)
+                        login(request, user)
+                        return HttpResponseRedirect(reverse('app:main'))
+                    else:
+                        error_message = 'Please verify your Email by visiting the link sent to you.'
+                        send_verification_link(res)
+                else:
+                    error_message = 'An error occurred.'
 
+    form = LoginForm()
     context = {
         'user': request.user,
-        'form': form
+        'form': form,
+        'error_message': error_message
     }
     return render(request, template, context)
 
 
-'''This view is called when a user requests to login on the discussion forum,this function is a stub as required to mimic
- the functionality of the authentication API for all users present in the master database.'''
-
-
-def auth(email, password):
-    if email == '' or password == '':
-        return None
-
-    act_password = 'iamstudent'
-
-    if password != act_password:
-        return None
-
-    return get_forum_user(email, password)
+def is_user_email_verified(firebase_user):
+    verified = is_email_verified(firebase_user)
+    return isinstance(verified, bool) and verified
 
 
 def get_forum_user(email, password):
@@ -88,8 +93,9 @@ def get_forum_user(email, password):
         user = User()
         user.username = email
         user.email = email
-        user.set_password(password)
-        user.save()
+
+    user.set_password(password)
+    user.save()
 
     try:
         ForumUser.objects.get(django_user=user)
@@ -112,11 +118,6 @@ def user_profile(request):
     return render(request, template, context)
 
 
-'''
-This view is called when the user wished to go the posts page on the discussion forum.
-'''
-
-
 def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
@@ -135,11 +136,6 @@ def get_posts(request):
         'items': paginator.page(page),
     }
     return render(request, template, context)
-
-
-'''
-This view is called when the user wished to go the "tags" page on the discussion forum.
-'''
 
 
 def get_tags(request):
@@ -163,11 +159,6 @@ def get_tags(request):
     return render(request, template, context)
 
 
-'''
-This view is called when the user wished to search for a particular tag on the "tags" page on the discussion forum.
-'''
-
-
 def search_tags(request):
     query = request.POST.get('query')
     limit = int(request.POST.get('limit', default=-1))
@@ -179,11 +170,6 @@ def search_tags(request):
     tags = json.loads(serializers.serialize("json", tags))
 
     return JsonResponse({'response': tags})
-
-
-'''
-This view is called when the user wished to go the "users" page on the discussion forum.
-'''
 
 
 def get_users(request):
@@ -207,11 +193,6 @@ def get_users(request):
     return render(request, template, context)
 
 
-'''
-This view is called on the posts page when a user wishes to see the detailed post created by a registered user.
-'''
-
-
 def post_details(request, pk):
     post = Post.objects.get(pk=pk)
     template = 'post_details.html'
@@ -220,11 +201,6 @@ def post_details(request, pk):
         'post': post
     }
     return render(request, template, context)
-
-
-'''
-This view is called on the tags page when a user wishes to see the detailed descption of a tag created by a registered user.
-'''
 
 
 def tag_details(request, pk):
@@ -237,11 +213,6 @@ def tag_details(request, pk):
     return render(request, template, context)
 
 
-'''
-This view is called on the users page when a user wishes to see the detailed profile of a registered user.
-'''
-
-
 def user_details(request, pk):
     user = ForumUser.objects.get(pk=pk)
     template = 'user_details.html'
@@ -250,11 +221,6 @@ def user_details(request, pk):
         'user_obj': user
     }
     return render(request, template, context)
-
-
-'''
-This view is called on the index page when a logged-in user wishes to add a new tag on the discussion forum.
-'''
 
 
 @login_required
@@ -273,11 +239,6 @@ def add_tag(request):
         return HttpResponse('This is a get request.')
 
 
-'''
-This view is called on the index page when a logged-in user wishes to update a existing tag title on the discussion forum.
-'''
-
-
 @login_required
 def update_tag(request):
     if request.POST:
@@ -292,11 +253,6 @@ def update_tag(request):
         return HttpResponseRedirect(reverse('app:tags'))
     else:
         return HttpResponse('This is a get request.')
-
-
-'''
-This view is called on the index page when a logged-in user wishes to add a new question on the discussion forum.
-'''
 
 
 @login_required
@@ -328,10 +284,6 @@ def add_post(request):
         return render(request, template, context)
 
 
-'''This view is called on the detailed posts page when a user wishes to add an answer for a post on one or more
-posts being displayed to the logged in user.'''
-
-
 @login_required
 def add_answer(request):
     if request.POST:
@@ -344,10 +296,6 @@ def add_answer(request):
         answer.created_by = ForumUser.objects.get(django_user=request.user)
         answer.save()
         return JsonResponse({'res': 'success'})
-
-
-'''This view is called on the detailed posts page when a user wishes to add a comment on an answer or post on one or more
-posts being displayed to the logged in user.'''
 
 
 @login_required

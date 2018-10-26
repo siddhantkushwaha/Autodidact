@@ -9,6 +9,22 @@
 {% endblock %}
 
 {% block body_content %}
+    {% if error_message %}
+        <div style="height: 36px;
+                    width: 100%;
+                    text-align: center;
+                    display: inline;
+                    padding-top: 80px;
+                    color: black;
+                    padding-bottom: 8px;
+                    size: 16px;">
+            <div style="background-color: #fff772;
+                        padding-top: 4px;
+                        padding-bottom: 4px;">
+                {{ error_message }}
+            </div>
+        </div>
+    {% endif %}
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
