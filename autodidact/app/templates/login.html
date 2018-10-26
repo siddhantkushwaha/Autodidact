@@ -5,9 +5,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/login.css' %}">
 {% endblock %}
 
-{% block navbar_content_2 %}
-{% endblock %}
-
 {% block body_content %}
     {% if error_message %}
         <div style="height: 36px;
@@ -68,4 +65,7 @@
 {% endblock %}
 
 {% block below_body_content %}
+    <script>
+        $('#main-footer').removeClass('mt-5')
+    </script>
 {% endblock %}
