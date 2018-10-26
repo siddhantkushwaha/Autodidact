@@ -14,6 +14,8 @@ from app.models import *
 
 '''This view is called when a user requests the home page of the discussion forum,the view has "index.html" as its template
  and the context being passed to the view contains the latest posts and tags and count of all tags/posts/users.'''
+
+
 def main(request):
     template = 'index.html'
 
@@ -31,8 +33,10 @@ def main(request):
     }
     return render(request, template, context)
 
+
 '''This view is called when a user requests to login on the discussion forum,the view has "login.html" as its template
  and the context being passed to the view contains the authenticated user and the form on unsuccessful login'''
+
 
 def login_user(request):
     logout(request)
@@ -43,12 +47,12 @@ def login_user(request):
         password = request.POST.get('password')
         print(email, password)
 
-        user_id, user = stub_auth(email, password)
+        user_id, user = auth(email, password)
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('app:main'))
         else:
-            return HttpResponse('error login')
+            return HttpResponseRedirect(reverse('app:login'))
     else:
         form = LoginForm()
 
@@ -62,7 +66,8 @@ def login_user(request):
 '''This view is called when a user requests to login on the discussion forum,this function is a stub as required to mimic
  the functionality of the authentication API for all users present in the master database.'''
 
-def stub_auth(email, password):
+
+def auth(email, password):
     if email == '' or password == '':
         return None, None
 
@@ -118,6 +123,7 @@ def user_profile(request):
 This view is called when the user wished to go the posts page on the discussion forum.
 '''
 
+
 def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
@@ -141,6 +147,7 @@ def get_posts(request):
 '''
 This view is called when the user wished to go the "tags" page on the discussion forum.
 '''
+
 
 def get_tags(request):
     template = 'tags.html'
@@ -167,6 +174,7 @@ def get_tags(request):
 This view is called when the user wished to search for a particular tag on the "tags" page on the discussion forum.
 '''
 
+
 def search_tags(request):
     query = request.POST.get('query')
     limit = int(request.POST.get('limit', default=-1))
@@ -183,6 +191,7 @@ def search_tags(request):
 '''
 This view is called when the user wished to go the "users" page on the discussion forum.
 '''
+
 
 def get_users(request):
     template = 'users.html'
@@ -209,6 +218,7 @@ def get_users(request):
 This view is called on the posts page when a user wishes to see the detailed post created by a registered user.
 '''
 
+
 def post_details(request, pk):
     post = Post.objects.get(pk=pk)
     template = 'post_details.html'
@@ -222,6 +232,7 @@ def post_details(request, pk):
 '''
 This view is called on the tags page when a user wishes to see the detailed descption of a tag created by a registered user.
 '''
+
 
 def tag_details(request, pk):
     tag = Tag.objects.get(pk=pk)
@@ -237,6 +248,7 @@ def tag_details(request, pk):
 This view is called on the users page when a user wishes to see the detailed profile of a registered user.
 '''
 
+
 def user_details(request, pk):
     user = ForumUser.objects.get(pk=pk)
     template = 'user_details.html'
@@ -250,6 +262,7 @@ def user_details(request, pk):
 '''
 This view is called on the index page when a logged-in user wishes to add a new tag on the discussion forum.
 '''
+
 
 @login_required
 def add_tag(request):
@@ -271,6 +284,7 @@ def add_tag(request):
 This view is called on the index page when a logged-in user wishes to update a existing tag title on the discussion forum.
 '''
 
+
 @login_required
 def update_tag(request):
     if request.POST:
@@ -290,6 +304,7 @@ def update_tag(request):
 '''
 This view is called on the index page when a logged-in user wishes to add a new question on the discussion forum.
 '''
+
 
 @login_required
 def add_post(request):
@@ -323,6 +338,7 @@ def add_post(request):
 '''This view is called on the detailed posts page when a user wishes to add an answer for a post on one or more
 posts being displayed to the logged in user.'''
 
+
 @login_required
 def add_answer(request):
     if request.POST:
@@ -336,8 +352,10 @@ def add_answer(request):
         answer.save()
         return JsonResponse({'res': 'success'})
 
+
 '''This view is called on the detailed posts page when a user wishes to add a comment on an answer or post on one or more
 posts being displayed to the logged in user.'''
+
 
 @login_required
 def add_comment(request):
