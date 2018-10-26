@@ -59,7 +59,7 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="{% url 'app:userProfile' %}" class="dropdown-item">
-                               <i class="fas fa-user-circle"></i> Update Profile
+                                <i class="fas fa-user-circle"></i> Update Profile
                             </a>
                             <a href="settings.html" class="dropdown-item">
                                 <i class="fas fa-cog"></i> Settings
@@ -73,7 +73,11 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a href="{% url 'app:login' %}" class="nav-link">
+                        {#                        <a href="{% url 'app:login' %}" class="nav-link">#}
+                        {#                            <i class="fas fa-user-alt"></i> Login#}
+                        {#                        </a>#}
+                        <a href="https://serene-wildwood-35121.herokuapp.com/login/5bbf0caf94ade722e5223581/"
+                           class="nav-link">
                             <i class="fas fa-user-alt"></i> Login
                         </a>
                     </li>

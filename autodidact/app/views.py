@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.db import connection
 from django.urls import reverse
 
-from app.forms import LoginForm
+from app.requests import auth_api
 from app.models import *
 
 
@@ -31,49 +31,17 @@ def main(request):
     return render(request, template, context)
 
 
-def login_user(request):
+def login_user(request, token):
     logout(request)
 
-    template = 'login.html'
-    if request.POST:
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        print(email, password)
+    email, password = auth_api(token)
+    user = get_forum_user(email, password)
 
-        user_id, user = stub_auth(email, password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('app:main'))
-        else:
-            return HttpResponse('error login')
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect(reverse('app:main'))
     else:
-        form = LoginForm()
-
-    context = {
-        'user': request.user,
-        'form': form
-    }
-    return render(request, template, context)
-
-
-def stub_auth(email, password):
-    if email == '' or password == '':
-        return None, None
-
-    user_dict = {
-        'siddhant.k16@iiits.in': {'password': 'siddhant@1234', 'id': 1},
-        'prakkash.m16@iiits.in': {'password': 'prakkash@1234', 'id': 2},
-        'udayraj.s16@iiits.in': {'password': 'uday@1234', 'id': 3},
-    }
-
-    if email not in user_dict.keys():
-        return None, None
-
-    if user_dict[email]['password'] != password:
-        return None, None
-
-    user_id = user_dict[email]['id']
-    return user_id, get_forum_user(email, password)
+        return HttpResponse('error login')
 
 
 def get_forum_user(email, password):
@@ -84,8 +52,9 @@ def get_forum_user(email, password):
         user = User()
         user.username = email
         user.email = email
-        user.set_password(password)
-        user.save()
+
+    user.set_password(password)
+    user.save()
 
     try:
         ForumUser.objects.get(django_user=user)
