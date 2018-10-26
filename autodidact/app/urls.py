@@ -27,5 +27,5 @@ urlpatterns = [
 
     url(r'^search/tags$', views.search_tags, name='searchTags'),
 
-    url(r'^logout$', views.logout_user, name='logout'),
+    url(r'^logout$', logout, {'next_page': '/'}, name='logout'),
 ]

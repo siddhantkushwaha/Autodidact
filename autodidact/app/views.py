@@ -44,10 +44,6 @@ def login_user(request, token):
         return HttpResponse('error login')
 
 
-def logout_user(request):
-    logout(request)
-
-
 def get_forum_user(email, password):
     try:
         user = User.objects.get(username=email)
