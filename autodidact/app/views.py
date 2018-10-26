@@ -47,7 +47,7 @@ def login_user(request):
         password = request.POST.get('password')
         print(email, password)
 
-        user = stub_auth(email, password)
+        user = auth(email, password)
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('app:main'))
@@ -67,14 +67,14 @@ def login_user(request):
  the functionality of the authentication API for all users present in the master database.'''
 
 
-def stub_auth(email, password):
+def auth(email, password):
     if email == '' or password == '':
-        return None, None
+        return None
 
     act_password = 'iamstudent'
 
     if password != act_password:
-        return None, None
+        return None
 
     return get_forum_user(email, password)
 
