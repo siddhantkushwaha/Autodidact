@@ -47,7 +47,7 @@ def login_user(request):
         password = request.POST.get('password')
         print(email, password)
 
-        user_id, user = auth(email, password)
+        user = auth(email, password)
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('app:main'))
@@ -69,22 +69,14 @@ def login_user(request):
 
 def auth(email, password):
     if email == '' or password == '':
-        return None, None
+        return None
 
-    user_dict = {
-        'siddhant.k16@iiits.in': {'password': 'siddhant@1234', 'id': 1},
-        'prakkash.m16@iiits.in': {'password': 'prakkash@1234', 'id': 2},
-        'udayraj.s16@iiits.in': {'password': 'uday@1234', 'id': 3},
-    }
+    act_password = 'iamstudent'
 
-    if email not in user_dict.keys():
-        return None, None
+    if password != act_password:
+        return None
 
-    if user_dict[email]['password'] != password:
-        return None, None
-
-    user_id = user_dict[email]['id']
-    return user_id, get_forum_user(email, password)
+    return get_forum_user(email, password)
 
 
 def get_forum_user(email, password):
