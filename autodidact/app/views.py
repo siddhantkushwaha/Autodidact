@@ -87,8 +87,9 @@ def get_forum_user(email, password):
         user = User()
         user.username = email
         user.email = email
-        user.set_password(password)
-        user.save()
+
+    user.set_password(password)
+    user.save()
 
     try:
         ForumUser.objects.get(django_user=user)
