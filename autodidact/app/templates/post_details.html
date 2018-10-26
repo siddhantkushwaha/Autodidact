@@ -23,10 +23,6 @@
             max-height: 1200px;
         }
     </style>
-
-{% endblock %}
-
-{% block navbar_content_1 %}
 {% endblock %}
 
 {% block body_content %}
@@ -101,17 +97,28 @@
     <!--ANSWERS-->
     <section id="answers">
         <div class="container mt-3">
-
+            <h4 style="margin-bottom: 1rem;">
+                {{ post.answer_set.all|length }} Answer{% if post.answer_set.all|length > 1 or post.answer_set.all|length == 0 %}s{% endif %}
+            </h4>
             {% for answer in post.answer_set.all %}
                 {% include 'answer.html' %}
             {% empty %}
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body" style="padding: 16px;">
+                                No one has answered this question yet.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
 
         </div>
     </section>
 
     <!--MY ANSWER-->
-    <section id="my_answer" style="margin-top: 16px;">
+    <section id="my_answer" style="margin-top: 32px;">
         <div class="container">
             <div class="row">
                 <div class="col">
