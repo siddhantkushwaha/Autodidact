@@ -22,7 +22,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=500, null=True)
+    description = models.CharField(max_length=1000, null=True)
     tags = models.ManyToManyField(Tag)
     view_count = models.IntegerField(default=0)
     upvote_count = models.IntegerField(default=0)
@@ -35,7 +35,7 @@ class Post(models.Model):
 
 
 class Answer(models.Model):
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
     post = models.ForeignKey(Post)
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
