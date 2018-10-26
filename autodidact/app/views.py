@@ -56,7 +56,7 @@ def auth_api(token):
         })
         res = json.loads(res.content)
         email = res['student'][0]['Student_Email']
-        password = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+        password = 'iamstudent'
 
         print(email, password)
         return email, password
