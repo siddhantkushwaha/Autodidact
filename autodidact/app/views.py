@@ -1,6 +1,4 @@
 import json
-import random
-import string
 import requests
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -50,7 +48,7 @@ def login_user(request, token):
 
 def auth_api(token):
     try:
-        res = requests.post(url=' https://serene-wildwood-35121.herokuapp.com/oauth/getDetails', data={
+        res = requests.post(url='https://serene-wildwood-35121.herokuapp.com/oauth/getDetails', data={
             'token': token,
             'secret': '40e05b687fe391deef99f10aced9ebc9096cd0410190ae5ef4fc797c02df9ce0cf7455b3be59baa0810e855dce66f80f4cb81d0a2d84dfa95877d46c3c15c861'
         })
