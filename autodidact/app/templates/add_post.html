@@ -86,7 +86,7 @@
 {% endblock %}
 
 {% block below_body_content %}
-    <script src="https://cdn.ckeditor.com/ckeditor5/11.1.1/classic/ckeditor.js"></script>
+    <script src="{% static 'app/js/ckeditor.js' %}"></script>
     <script>
         let editor;
         ClassicEditor
