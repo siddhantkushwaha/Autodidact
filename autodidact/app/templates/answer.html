@@ -36,7 +36,9 @@
                 {% include 'comment.html' %}
             {% endfor %}
 
-            {% include 'add_comment.html' %}
+            {% if user.is_authenticated %}
+                {% include 'add_comment.html' %}
+            {% endif %}
         </div>
     </div>
 </div>
