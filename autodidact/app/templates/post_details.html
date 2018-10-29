@@ -63,7 +63,7 @@
                                     <div class="mx-2" onclick="vote(0, {{ post.id }}, 0)">
                                         <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
                                     </div>
-                                    <span class="h3 vote_count">0</span>
+                                    <span class="h3 vote_count">{{ post.up_voters.all|length}}</span>
                                     <div class="mx-2" onclick="vote(0, {{ post.id }}, 1)">
                                         <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
                                            style="font-size:36px;color:gray;"></i>
@@ -118,7 +118,7 @@
                                         <div class="mx-2" onclick="vote(1, {{ answer.id }}, 0)">
                                             <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
                                         </div>
-                                        <span class="h3 vote_count">5</span>
+                                        <span class="h3 vote_count">{{ answer.up_voters.all|length}}</span>
                                         <div class="mx-2" onclick="vote(1, {{ answer.id }}, 1)">
                                             <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
                                                style="font-size:36px;color:gray;"></i>
