@@ -57,7 +57,7 @@
                                 <tr>
                                     <td>{{ forloop.counter0|add:items.start_index }}</td>
                                     <td>{{ post.title }}</td>
-                                    <td>{{ post.view_count }}</td>
+                                    <td>{{ post.viewers.all|length }}</td>
                                     <td>{{ post.creation_time }}</td>
                                     <td>
                                         <a href="{% url 'app:postDetails' post.id %}"

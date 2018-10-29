@@ -35,11 +35,12 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     tags = models.ManyToManyField(Tag)
-    view_count = models.IntegerField(default=0)
-    upvote_count = models.IntegerField(default=0)
-    downvote_count = models.IntegerField(default=0)
+    up_voters = models.ManyToManyField(ForumUser, related_name='up_voted_post')
+    down_voters = models.ManyToManyField(ForumUser, related_name='down_voted_post')
+    viewers = models.ManyToManyField(ForumUser, related_name='viewed_post')
+    closed = models.BooleanField(default=False)
     creation_time = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(ForumUser)
+    created_by = models.ForeignKey(ForumUser, related_name='created_post')
 
     def __str__(self):
         return str(self.title) + ' ;' + str(self.creation_time)
@@ -52,10 +53,11 @@ particular post, it is dependant on it hence a foreign key of the Post Class.'''
 class Answer(models.Model):
     description = models.CharField(max_length=1000)
     post = models.ForeignKey(Post)
-    upvote_count = models.IntegerField(default=0)
-    downvote_count = models.IntegerField(default=0)
+    up_voters = models.ManyToManyField(ForumUser, related_name='up_voted_answer')
+    down_voters = models.ManyToManyField(ForumUser, related_name='down_voted_answer')
+    accepted = models.BooleanField(default=False)
     creation_time = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(ForumUser)
+    created_by = models.ForeignKey(ForumUser, related_name='created_answer')
 
     def __str__(self):
         return str(self.description)[:20] + ' ;' + str(self.creation_time)
@@ -70,7 +72,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, null=True)
     answer = models.ForeignKey(Answer, null=True)
     creation_time = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(ForumUser)
+    created_by = models.ForeignKey(ForumUser, related_name='created_comment')
 
     def __str__(self):
         return str(self.description)[:20] + ' ;' + str(self.creation_time)

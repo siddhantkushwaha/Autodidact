@@ -41,7 +41,7 @@
     <!--POST-->
     <section id="question_details" style="margin-top: 32px;">
         <div class="container">
-            <div class="row">
+            <div id="post_{{ post.id }}" class="row">
                 <div class="col">
                     <div class="card mb-3">
                         <div class="card-header">
@@ -56,16 +56,18 @@
                             {% endfor %}
                         </div>
                         <div class="card-footer d-inline">
+
                             <div class="row">
+
                                 <div class="col-xs-12 col-lg-3 d-inline my-2 class1">
-                                    <a href="#" class="nodecoration mx-2">
+                                    <div class="mx-2" onclick="vote(0, {{ post.id }}, 0)">
                                         <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
-                                    </a>
-                                    <span class="h3">0</span>
-                                    <a href="#" class="nodecoration mx-2">
+                                    </div>
+                                    <span class="h3 vote_count">{{ post.up_voters.all|length}}</span>
+                                    <div class="mx-2" onclick="vote(0, {{ post.id }}, 1)">
                                         <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
                                            style="font-size:36px;color:gray;"></i>
-                                    </a>
+                                    </div>
                                 </div>
 
                                 <div class="col-xs-12 col-lg-6 d-inline my-2 class1">
@@ -104,7 +106,50 @@
                 {% if post.answer_set.all|length > 1 or post.answer_set.all|length == 0 %}s{% endif %}
             </h4>
             {% for answer in post.answer_set.all %}
-                {% include 'answer.html' %}
+                <div id="answer_{{ answer.id }}" class="row">
+                    <div class="col">
+                        <div class="card mb-3">
+                            <div class="border card-body" style="padding: 0;">
+                                <textarea class="answers form-control">{{ answer.description }}</textarea>
+                            </div>
+                            <div class="card-footer d-inline">
+                                <div class="row">
+                                    <div class="col-xs-12 col-lg-3 d-inline my-2 class1">
+                                        <div class="mx-2" onclick="vote(1, {{ answer.id }}, 0)">
+                                            <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
+                                        </div>
+                                        <span class="h3 vote_count">{{ answer.up_voters.all|length}}</span>
+                                        <div class="mx-2" onclick="vote(1, {{ answer.id }}, 1)">
+                                            <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
+                                               style="font-size:36px;color:gray;"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-lg-6 d-inline my-2 class1">
+                                        <h6 class="card-title my-0">{{ answer.creation_time }}</h6>
+                                    </div>
+
+                                    <div class="col-xs-12 col-lg-3 d-inline my-2 class1">
+                                        <div class="card p-0 mr-0" style="width: 15rem;">
+                                            <div class="card-body">
+                                                <h6 class="card-title my-0">answered by <span></span></h6>
+                                                <a href="#" class="card-link my-0">{{ answer.created_by }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% for comment in answer.comment_set.all %}
+                                {% include 'comment.html' %}
+                            {% endfor %}
+
+                            {% if user.is_authenticated %}
+                                {% include 'add_comment.html' %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             {% empty %}
                 <div class="row">
                     <div class="col">
@@ -230,6 +275,38 @@
                 },
                 error: function (res) {
                     console.log('Add Answer Failed.');
+                    console.log(res);
+                },
+            });
+        }
+    </script>
+    <script>
+        function vote(type, id, value) {
+
+            $.ajax({
+                type: "POST",
+                url: '{% url 'app:vote' %}',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'type': type,
+                    'id': id,
+                    'value': value
+                },
+
+                success: function (res) {
+                    console.log('Vote Successful.');
+                    console.log(res);
+
+                    element = document.getElementById('post_' + id);
+                    if (type === 1) element = document.getElementById('answer_' + id);
+                    element = element.querySelector('.vote_count');
+
+                    if (res.result === 'done')
+                        element.innerHTML = res.votes;
+                },
+                error: function (res) {
+                    console.log('Vote Failed.');
                     console.log(res);
                 },
             });
