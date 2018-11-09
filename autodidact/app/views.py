@@ -87,8 +87,9 @@ def get_forum_user(email, password):
         user = User()
         user.username = email
         user.email = email
-        user.set_password(password)
-        user.save()
+
+    user.set_password(password)
+    user.save()
 
     try:
         ForumUser.objects.get(django_user=user)
@@ -213,6 +214,12 @@ This view is called on the posts page when a user wishes to see the detailed pos
 
 def post_details(request, pk):
     post = Post.objects.get(pk=pk)
+
+    if request.user.is_authenticated():
+        forum_user = ForumUser.objects.get(django_user=request.user)
+        post.viewers.add(forum_user)
+        post.save()
+
     template = 'post_details.html'
     context = {
         'user': request.user,
@@ -373,3 +380,29 @@ def add_comment(request):
         comment.created_by = ForumUser.objects.get(django_user=request.user)
         comment.save()
         return HttpResponseRedirect(reverse('app:postDetails', kwargs={'pk': post_id}))
+
+
+def vote(request):
+    type = int(request.POST.get('type'))
+    id = int(request.POST.get('id'))
+    value = int(request.POST.get('value'))
+
+    forum_user = ForumUser.objects.get(django_user=request.user)
+    if forum_user.reputation < 5:
+        return JsonResponse({'result': 'failed'})
+
+    if type == 0:
+        obj = Post.objects.get(pk=id)
+    else:
+        obj = Answer.objects.get(pk=id)
+
+    if value == 0:
+        obj.up_voters.add(forum_user)
+        obj.down_voters.remove(forum_user)
+    else:
+        obj.up_voters.remove(forum_user)
+        obj.down_voters.add(forum_user)
+
+    obj.save()
+
+    return JsonResponse({'result': 'done', 'votes': len(obj.up_voters.all()) - len(obj.down_voters.all())})

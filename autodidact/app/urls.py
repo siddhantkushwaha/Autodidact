@@ -27,5 +27,7 @@ urlpatterns = [
 
     url(r'^search/tags$', views.search_tags, name='searchTags'),                    # Search for tags while Asking a Question
 
+    url(r'^vote$', views.vote, name='vote'),
+
     url(r'^logout$', logout, {'next_page': '/'}, name='logout'),                    # Logging out a User
 ]

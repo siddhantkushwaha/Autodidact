@@ -3,9 +3,6 @@
 {% block head_content %}
 {% endblock %}
 
-{% block navbar_content_1 %}
-{% endblock %}
-
 {% block body_content %}
     <!-- HEADER -->
     <header id="main-header" class="py-2 bg-primary text-white">
@@ -60,7 +57,7 @@
                                 <tr>
                                     <td>{{ forloop.counter0|add:items.start_index }}</td>
                                     <td>{{ post.title }}</td>
-                                    <td>{{ post.view_count }}</td>
+                                    <td>{{ post.viewers.all|length }}</td>
                                     <td>{{ post.creation_time }}</td>
                                     <td>
                                         <a href="{% url 'app:postDetails' post.id %}"
