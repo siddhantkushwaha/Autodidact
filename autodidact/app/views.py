@@ -257,7 +257,7 @@ def user_details(request, pk):
     context = {
         'user': request.user,
         'user_obj': user,
-        'tags' : tags
+        'tags': tags
     }
     return render(request, template, context)
 
@@ -307,6 +307,33 @@ def update_tag(request):
 '''
 This view is called on the index page when a logged-in user wishes to add a new question on the discussion forum.
 '''
+
+
+@login_required
+def update_answer_accept(request):
+    if request.POST:
+        res = JsonResponse({'res': 'failed'})
+        answer_id = int(request.POST.get('id'))
+        answer = Answer.objects.get(pk=answer_id)
+        if answer.post.created_by.django_user == request.user:
+            post = answer.post
+
+            if post.accepted_answer is not None:
+                obj = post.accepted_answer.created_by
+                obj.reputation -= 10
+                obj.save()
+
+            if post.accepted_answer != answer:
+                post.accepted_answer = answer
+                obj = answer.created_by
+                obj.reputation += 10
+                obj.save()
+            else:
+                post.accepted_answer = None
+
+            post.save()
+            res = JsonResponse({'res': 'success'})
+        return res
 
 
 @login_required

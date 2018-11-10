@@ -63,7 +63,7 @@
                                     <div class="mx-2" onclick="vote(0, {{ post.id }}, 0)">
                                         <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
                                     </div>
-                                    <span class="h3 vote_count">{{ post.up_voters.all|length}}</span>
+                                    <span class="h3 vote_count">{{ post.up_voters.all|length }}</span>
                                     <div class="mx-2" onclick="vote(0, {{ post.id }}, 1)">
                                         <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
                                            style="font-size:36px;color:gray;"></i>
@@ -115,10 +115,30 @@
                             <div class="card-footer d-inline">
                                 <div class="row">
                                     <div class="col-xs-12 col-lg-3 d-inline my-2 class1">
+
+                                        <label class="container">
+                                            <input
+                                                    type="checkbox"
+
+                                                    {% if post.accepted_answer == answer %}
+                                                    checked="checked"
+                                                    {% endif %}
+
+                                                    {% if user != post.created_by.django_user %}
+                                                    disabled
+                                                        {% if answer != post.accepted_answer %}
+                                                    style="display: none;"
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    onclick="markAccepted({{ answer.id }})"
+                                            />
+                                            <span class="checkmark"></span>
+                                        </label>
+
                                         <div class="mx-2" onclick="vote(1, {{ answer.id }}, 0)">
                                             <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
                                         </div>
-                                        <span class="h3 vote_count">{{ answer.up_voters.all|length}}</span>
+                                        <span class="h3 vote_count">{{ answer.up_voters.all|length }}</span>
                                         <div class="mx-2" onclick="vote(1, {{ answer.id }}, 1)">
                                             <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
                                                style="font-size:36px;color:gray;"></i>
@@ -307,6 +327,29 @@
                 },
                 error: function (res) {
                     console.log('Vote Failed.');
+                    console.log(res);
+                },
+            });
+        }
+    </script>
+    <script>
+        function markAccepted(id) {
+            $.ajax({
+                type: "POST",
+                url: '{% url 'app:updateAnswerAccept' %}',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'id': id
+                },
+
+                success: function (res) {
+                    console.log('Update Answer Successful.');
+                    console.log(res);
+                    window.location.href = "{% url 'app:postDetails' post.id %}"
+                },
+                error: function (res) {
+                    console.log('Update Answer Failed.');
                     console.log(res);
                 },
             });
