@@ -56,7 +56,12 @@
                                 <p> <i class="fas fa-at"></i>  &nbsp;&nbsp; Email <br> {{ user_obj.django_user.username }} </p>
                                 <p> <i class="fas fa-calendar-alt"></i>  &nbsp;&nbsp; Date Joined <br>{{ user_obj.django_user.date_joined }}  </p>
                                 <p> <i class="fas fa-user-graduate"></i>  &nbsp;&nbsp;Reputation <br>{{ user_obj.reputation }}  </p>
-                                <small style="margin-top: 100px;margin-left: 45px"><cite title="San Diego, USA">Last Login {{ user_obj.django_user.last_login }}</cite></small>
+                                <p> <i class="fas fa-tags"></i>  Tags <br>
+                                    {% for tag in tags %}
+                                        {{ tag.name }} &nbsp;
+                                    {% endfor %}
+                                </p>
+                                <small style="margin-top: 50px;margin-left: 45px"><cite title="San Diego, USA">Last Login {{ user_obj.django_user.last_login }}</cite></small>
                             </div>
                         </div>
                     </div>

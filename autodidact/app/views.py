@@ -191,7 +191,7 @@ def get_users(request):
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
-    forumUsers = ForumUser.objects.order_by('reputation')
+    forumUsers = ForumUser.objects.order_by('-reputation')
 
     query = request.GET.get('query')
     if query is not None:
@@ -251,9 +251,13 @@ This view is called on the users page when a user wishes to see the detailed pro
 def user_details(request, pk):
     user = ForumUser.objects.get(pk=pk)
     template = 'user_details.html'
+    tags = Tag.objects.filter(created_by__django_user=request.user)[:3]
+    # user.tag_set.all()
+    # print(tags)
     context = {
         'user': request.user,
-        'user_obj': user
+        'user_obj': user,
+        'tags' : tags
     }
     return render(request, template, context)
 
