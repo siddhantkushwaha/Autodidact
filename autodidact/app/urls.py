@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^add/comment$', views.add_comment, name='addComment'),                    # Adding a tag/post/answer/comment on the forum
 
     url(r'^update/tag$', views.update_tag, name='updateTag'),                       # Update title of an existing Tag
+    url(r'^update/answer/accept$', views.update_answer_accept, name='updateAnswerAccept'),
 
     url(r'^search/tags$', views.search_tags, name='searchTags'),                    # Search for tags while Asking a Question
 
