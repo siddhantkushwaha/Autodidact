@@ -12,9 +12,6 @@ from django.urls import reverse
 from app.forms import LoginForm
 from app.models import *
 
-'''This view is called when a user requests the home page of the discussion forum,the view has "index.html" as its template
- and the context being passed to the view contains the latest posts and tags and count of all tags/posts/users.'''
-
 
 def main(request):
     template = 'index.html'
@@ -32,10 +29,6 @@ def main(request):
         'n_users': n_users
     }
     return render(request, template, context)
-
-
-'''This view is called when a user requests to login on the discussion forum,the view has "login.html" as its template
- and the context being passed to the view contains the authenticated user and the form on unsuccessful login'''
 
 
 def login_user(request):
@@ -61,10 +54,6 @@ def login_user(request):
         'form': form
     }
     return render(request, template, context)
-
-
-'''This view is called when a user requests to login on the discussion forum,this function is a stub as required to mimic
- the functionality of the authentication API for all users present in the master database.'''
 
 
 def auth(email, password):
@@ -112,11 +101,6 @@ def user_profile(request):
     return render(request, template, context)
 
 
-'''
-This view is called when the user wished to go the posts page on the discussion forum.
-'''
-
-
 def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
@@ -135,11 +119,6 @@ def get_posts(request):
         'items': paginator.page(page),
     }
     return render(request, template, context)
-
-
-'''
-This view is called when the user wished to go the "tags" page on the discussion forum.
-'''
 
 
 def get_tags(request):
@@ -163,29 +142,6 @@ def get_tags(request):
     return render(request, template, context)
 
 
-'''
-This view is called when the user wished to search for a particular tag on the "tags" page on the discussion forum.
-'''
-
-
-def search_tags(request):
-    query = request.POST.get('query')
-    limit = int(request.POST.get('limit', default=-1))
-
-    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
-    if limit != -1:
-        tags = tags[: limit]
-
-    tags = json.loads(serializers.serialize("json", tags))
-
-    return JsonResponse({'response': tags})
-
-
-'''
-This view is called when the user wished to go the "users" page on the discussion forum.
-'''
-
-
 def get_users(request):
     template = 'users.html'
     items_per_page = 25
@@ -207,11 +163,6 @@ def get_users(request):
     return render(request, template, context)
 
 
-'''
-This view is called on the posts page when a user wishes to see the detailed post created by a registered user.
-'''
-
-
 def post_details(request, pk):
     post = Post.objects.get(pk=pk)
 
@@ -228,11 +179,6 @@ def post_details(request, pk):
     return render(request, template, context)
 
 
-'''
-This view is called on the tags page when a user wishes to see the detailed descption of a tag created by a registered user.
-'''
-
-
 def tag_details(request, pk):
     tag = Tag.objects.get(pk=pk)
     template = 'tag_details.html'
@@ -241,11 +187,6 @@ def tag_details(request, pk):
         'tag': tag
     }
     return render(request, template, context)
-
-
-'''
-This view is called on the users page when a user wishes to see the detailed profile of a registered user.
-'''
 
 
 def user_details(request, pk):
@@ -262,11 +203,6 @@ def user_details(request, pk):
     return render(request, template, context)
 
 
-'''
-This view is called on the index page when a logged-in user wishes to add a new tag on the discussion forum.
-'''
-
-
 @login_required
 def add_tag(request):
     if request.POST:
@@ -281,59 +217,6 @@ def add_tag(request):
         return HttpResponseRedirect(reverse('app:main'))
     else:
         return HttpResponse('This is a get request.')
-
-
-'''
-This view is called on the index page when a logged-in user wishes to update a existing tag title on the discussion forum.
-'''
-
-
-@login_required
-def update_tag(request):
-    if request.POST:
-        new_tag = request.POST.get('tag')
-        old_tag = request.POST.get('oldtag')
-        print(new_tag)
-        print(old_tag)
-        cursor = connection.cursor()
-        query = 'call update_tag("%s", "%s")' % (new_tag, old_tag)
-        cursor.execute(query)
-
-        return HttpResponseRedirect(reverse('app:tags'))
-    else:
-        return HttpResponse('This is a get request.')
-
-
-'''
-This view is called on the index page when a logged-in user wishes to add a new question on the discussion forum.
-'''
-
-
-@login_required
-def update_answer_accept(request):
-    if request.POST:
-        res = JsonResponse({'res': 'failed'})
-        answer_id = int(request.POST.get('id'))
-        answer = Answer.objects.get(pk=answer_id)
-        if answer.post.created_by.django_user == request.user:
-            post = answer.post
-
-            if post.accepted_answer is not None:
-                obj = post.accepted_answer.created_by
-                obj.reputation -= 10
-                obj.save()
-
-            if post.accepted_answer != answer:
-                post.accepted_answer = answer
-                obj = answer.created_by
-                obj.reputation += 10
-                obj.save()
-            else:
-                post.accepted_answer = None
-
-            post.save()
-            res = JsonResponse({'res': 'success'})
-        return res
 
 
 @login_required
@@ -365,10 +248,6 @@ def add_post(request):
         return render(request, template, context)
 
 
-'''This view is called on the detailed posts page when a user wishes to add an answer for a post on one or more
-posts being displayed to the logged in user.'''
-
-
 @login_required
 def add_answer(request):
     if request.POST:
@@ -381,10 +260,6 @@ def add_answer(request):
         answer.created_by = ForumUser.objects.get(django_user=request.user)
         answer.save()
         return JsonResponse({'res': 'success'})
-
-
-'''This view is called on the detailed posts page when a user wishes to add a comment on an answer or post on one or more
-posts being displayed to the logged in user.'''
 
 
 @login_required
@@ -411,6 +286,62 @@ def add_comment(request):
         comment.created_by = ForumUser.objects.get(django_user=request.user)
         comment.save()
         return HttpResponseRedirect(reverse('app:postDetails', kwargs={'pk': post_id}))
+
+
+@login_required
+def update_tag(request):
+    if request.POST:
+        new_tag = request.POST.get('tag')
+        old_tag = request.POST.get('oldtag')
+        print(new_tag)
+        print(old_tag)
+        cursor = connection.cursor()
+        query = 'call update_tag("%s", "%s")' % (new_tag, old_tag)
+        cursor.execute(query)
+
+        return HttpResponseRedirect(reverse('app:tags'))
+    else:
+        return HttpResponse('This is a get request.')
+
+
+@login_required
+def update_answer_accept(request):
+    if request.POST:
+        res = JsonResponse({'res': 'failed'})
+        answer_id = int(request.POST.get('id'))
+        answer = Answer.objects.get(pk=answer_id)
+        if answer.post.created_by.django_user == request.user:
+            post = answer.post
+
+            if post.accepted_answer is not None:
+                obj = post.accepted_answer.created_by
+                obj.reputation -= 10
+                obj.save()
+
+            if post.accepted_answer != answer:
+                post.accepted_answer = answer
+                obj = answer.created_by
+                obj.reputation += 10
+                obj.save()
+            else:
+                post.accepted_answer = None
+
+            post.save()
+            res = JsonResponse({'res': 'success'})
+        return res
+
+
+def search_tags(request):
+    query = request.POST.get('query')
+    limit = int(request.POST.get('limit', default=-1))
+
+    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
+    if limit != -1:
+        tags = tags[: limit]
+
+    tags = json.loads(serializers.serialize("json", tags))
+
+    return JsonResponse({'response': tags})
 
 
 def vote(request):
