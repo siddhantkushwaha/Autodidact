@@ -115,6 +115,17 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-lg-3 d-inline my-2 class1">
 
+                                        <div class="mx-2" onclick="vote(1, {{ answer.id }}, 0)">
+                                            <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
+                                        </div>
+                                        <span class="h3 vote_count">{{ answer.up_voters.all|length }}</span>
+                                        <div class="mx-2" onclick="vote(1, {{ answer.id }}, 1)">
+                                            <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
+                                               style="font-size:36px;color:gray;"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12 col-lg-6 d-inline my-2 class1">
                                         <div style="padding: 8px;">
                                             <img
                                                     style="width: 32px; height: 32px;"
@@ -134,25 +145,13 @@
                                                     {% endif %}
                                             >
                                         </div>
-
-                                        <div class="mx-2" onclick="vote(1, {{ answer.id }}, 0)">
-                                            <i class="fa fa-thumbs-o-up fa-2x" style="font-size:36px; color:green;"></i>
-                                        </div>
-                                        <span class="h3 vote_count">{{ answer.up_voters.all|length }}</span>
-                                        <div class="mx-2" onclick="vote(1, {{ answer.id }}, 1)">
-                                            <i class="fa fa-thumbs-o-down fa-2x fa-flip-horizontal"
-                                               style="font-size:36px;color:gray;"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xs-12 col-lg-6 d-inline my-2 class1">
                                         <h6 class="card-title my-0">{{ answer.creation_time }}</h6>
                                     </div>
 
                                     <div class="col-xs-12 col-lg-3 d-inline my-2 class1">
                                         <div class="card p-0 mr-0" style="width: 15rem;">
                                             <div class="card-body">
-                                                <h6 class="card-title my-0">answered by <span></span></h6>
+                                                <h6 class="card-title my-0">answered by</h6>
                                                 <a href="#" class="card-link my-0">{{ answer.created_by }}</a>
                                             </div>
                                         </div>
