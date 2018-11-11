@@ -55,10 +55,7 @@ def auth_api(token):
         res = json.loads(res.content)
         email = res['student'][0]['Student_Email']
         password = 'iamstudent'
-
-        print(email, password)
         return email, password
-
     except Exception as e:
         print(e)
         return None, None
@@ -138,25 +135,12 @@ def get_tags(request):
     return render(request, template, context)
 
 
-def search_tags(request):
-    query = request.POST.get('query')
-    limit = int(request.POST.get('limit', default=-1))
-
-    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
-    if limit != -1:
-        tags = tags[: limit]
-
-    tags = json.loads(serializers.serialize("json", tags))
-
-    return JsonResponse({'response': tags})
-
-
 def get_users(request):
     template = 'users.html'
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
-    forumUsers = ForumUser.objects.order_by('reputation')
+    forumUsers = ForumUser.objects.order_by('-reputation')
 
     query = request.GET.get('query')
     if query is not None:
@@ -201,9 +185,13 @@ def tag_details(request, pk):
 def user_details(request, pk):
     user = ForumUser.objects.get(pk=pk)
     template = 'user_details.html'
+    tags = Tag.objects.filter(created_by__django_user=request.user)[:3]
+    # user.tag_set.all()
+    # print(tags)
     context = {
         'user': request.user,
-        'user_obj': user
+        'user_obj': user,
+        'tags': tags
     }
     return render(request, template, context)
 
@@ -220,22 +208,6 @@ def add_tag(request):
         cursor.execute(query)
 
         return HttpResponseRedirect(reverse('app:main'))
-    else:
-        return HttpResponse('This is a get request.')
-
-
-@login_required
-def update_tag(request):
-    if request.POST:
-        new_tag = request.POST.get('tag')
-        old_tag = request.POST.get('oldtag')
-        print(new_tag)
-        print(old_tag)
-        cursor = connection.cursor()
-        query = 'call update_tag("%s", "%s")' % (new_tag, old_tag)
-        cursor.execute(query)
-
-        return HttpResponseRedirect(reverse('app:tags'))
     else:
         return HttpResponse('This is a get request.')
 
@@ -307,6 +279,62 @@ def add_comment(request):
         comment.created_by = ForumUser.objects.get(django_user=request.user)
         comment.save()
         return HttpResponseRedirect(reverse('app:postDetails', kwargs={'pk': post_id}))
+
+
+@login_required
+def update_tag(request):
+    if request.POST:
+        new_tag = request.POST.get('tag')
+        old_tag = request.POST.get('oldtag')
+        print(new_tag)
+        print(old_tag)
+        cursor = connection.cursor()
+        query = 'call update_tag("%s", "%s")' % (new_tag, old_tag)
+        cursor.execute(query)
+
+        return HttpResponseRedirect(reverse('app:tags'))
+    else:
+        return HttpResponse('This is a get request.')
+
+
+@login_required
+def update_answer_accept(request):
+    if request.POST:
+        res = JsonResponse({'res': 'failed'})
+        answer_id = int(request.POST.get('id'))
+        answer = Answer.objects.get(pk=answer_id)
+        if answer.post.created_by.django_user == request.user:
+            post = answer.post
+
+            if post.accepted_answer is not None:
+                obj = post.accepted_answer.created_by
+                obj.reputation -= 10
+                obj.save()
+
+            if post.accepted_answer != answer:
+                post.accepted_answer = answer
+                obj = answer.created_by
+                obj.reputation += 10
+                obj.save()
+            else:
+                post.accepted_answer = None
+
+            post.save()
+            res = JsonResponse({'res': 'success'})
+        return res
+
+
+def search_tags(request):
+    query = request.POST.get('query')
+    limit = int(request.POST.get('limit', default=-1))
+
+    tags = Tag.objects.filter(name__icontains=query).order_by('use_count').order_by('id')
+    if limit != -1:
+        tags = tags[: limit]
+
+    tags = json.loads(serializers.serialize("json", tags))
+
+    return JsonResponse({'response': tags})
 
 
 def vote(request):
