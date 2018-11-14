@@ -148,12 +148,17 @@ def get_users(request):
     page = int(request.GET.get(key='page', default=1))
 
     forumUsers = ForumUser.objects.order_by('-reputation')
+    # forumUsers = ForumUser.objects.raw('SELECT * from app_forumuser ORDER BY reputation DESC')
 
     query = request.GET.get('query')
     if query is not None:
         forumUsers = forumUsers.filter(django_user__email__icontains=query)
+        # raw_sql_query = 'call autodidact_forum.search_email("%s")' % (query)
+        # forumUsers = ForumUser.objects.raw('call autodidact_forum.search_email("%s")',query)
+        print(forumUsers)
 
     paginator = Paginator(object_list=forumUsers, per_page=items_per_page)
+    # paginator._count = len(list(forumUsers))
 
     context = {
         'user': request.user,
