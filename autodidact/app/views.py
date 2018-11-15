@@ -167,6 +167,19 @@ def get_users(request):
     }
     return render(request, template, context)
 
+@login_required
+def get_profile(request):
+    forumUser = ForumUser.objects.get(django_user=request.user)
+    template = 'user_profile.html'
+    tags = Tag.objects.filter(created_by=forumUser)[:3]
+    # forumUser.tag_set.all()
+    context = {
+        'user': request.user,
+        'user_obj': forumUser,
+        'tags': tags
+    }
+    return render(request, template, context)
+
 
 def post_details(request, pk):
     post = Post.objects.get(pk=pk)
@@ -197,7 +210,7 @@ def tag_details(request, pk):
 def user_details(request, pk):
     user = ForumUser.objects.get(pk=pk)
     template = 'user_details.html'
-    tags = Tag.objects.filter(created_by__django_user=request.user)[:3]
+    tags = Tag.objects.filter(created_by_id=pk)[:3]
     # user.tag_set.all()
     # print(tags)
     context = {
