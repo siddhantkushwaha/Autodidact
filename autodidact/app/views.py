@@ -105,11 +105,15 @@ def get_posts(request):
     template = 'posts.html'
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
-    posts = Post.objects.all()
+
+    sql_query = 'call autodidact_forum.search_post("%s")' % ''
+    posts = list(Post.objects.raw(sql_query))
 
     query = request.GET.get('query')
     if query is not None:
-        posts = posts.filter(title__icontains=query)
+        # posts = posts.filter(title__icontains=query)
+        sql_query = 'call autodidact_forum.search_post("%s")' % query
+        posts = list(Post.objects.raw(sql_query))
 
     paginator = Paginator(object_list=posts, per_page=items_per_page)
 
@@ -126,11 +130,14 @@ def get_tags(request):
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
-    tags = Tag.objects.order_by('id').order_by('-use_count')
+    sql_query = 'call autodidact_forum.search_tag("%s")' % ''
+    tags = list(Tag.objects.raw(sql_query))
 
     query = request.GET.get('query')
     if query is not None:
-        tags = tags.filter(name__icontains=query)
+        # tags = tags.filter(name__icontains=query)
+        sql_query = 'call autodidact_forum.search_tag("%s")' % query
+        tags = list(Tag.objects.raw(sql_query))
 
     paginator = Paginator(object_list=tags, per_page=items_per_page)
 
@@ -147,18 +154,17 @@ def get_users(request):
     items_per_page = 25
     page = int(request.GET.get(key='page', default=1))
 
-    forumUsers = ForumUser.objects.order_by('-reputation')
-    # forumUsers = ForumUser.objects.raw('SELECT * from app_forumuser ORDER BY reputation DESC')
+    sql_query = 'call autodidact_forum.search_forum_user("%s")' % ''
+    forumUsers = list(ForumUser.objects.raw(sql_query))
 
     query = request.GET.get('query')
     if query is not None:
-        forumUsers = forumUsers.filter(django_user__email__icontains=query)
-        # raw_sql_query = 'call autodidact_forum.search_email("%s")' % (query)
-        # forumUsers = ForumUser.objects.raw('call autodidact_forum.search_email("%s")',query)
+        # forumUsers = forumUsers.filter(django_user__email__icontains=query)
+        sql_query = 'call autodidact_forum.search_forum_user("%s")' % query
+        forumUsers = list(ForumUser.objects.raw(sql_query))
         print(forumUsers)
 
     paginator = Paginator(object_list=forumUsers, per_page=items_per_page)
-    # paginator._count = len(list(forumUsers))
 
     context = {
         'user': request.user,
@@ -166,6 +172,7 @@ def get_users(request):
         'items': paginator.page(page),
     }
     return render(request, template, context)
+
 
 @login_required
 def get_profile(request):
