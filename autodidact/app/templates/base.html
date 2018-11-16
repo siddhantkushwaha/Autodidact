@@ -59,11 +59,11 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="{% url 'app:userProfile' %}" class="dropdown-item">
-                                <i class="fas fa-user-circle"></i> Update Profile
+                               <i class="fas fa-user-circle"></i> View Profile
                             </a>
-                            <a href="settings.html" class="dropdown-item">
-                                <i class="fas fa-cog"></i> Settings
-                            </a>
+{#                            <a href="settings.html" class="dropdown-item">#}
+{#                                <i class="fas fa-cog"></i> Settings#}
+{#                            </a>#}
                         </div>
                     </li>
                     <li class="nav-item">
@@ -73,11 +73,7 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-{#                        <a href="https://serene-wildwood-35121.herokuapp.com/login/5bbf0caf94ade722e5223581/"#}
-{#                           class="nav-link">#}
-{#                            <i class="fas fa-user-alt"></i> Login#}
-{#                        </a>#}
-                         <a href="http://10.0.80.133:3000/login/5bbf0caf94ade722e5223581/"
+                        <a href="https://serene-wildwood-35121.herokuapp.com/login/5bbf0caf94ade722e5223581/"
                            class="nav-link">
                             <i class="fas fa-user-alt"></i> Login
                         </a>
