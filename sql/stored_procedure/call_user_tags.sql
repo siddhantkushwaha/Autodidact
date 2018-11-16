@@ -1,1 +1,0 @@
-call user_tags(2);
